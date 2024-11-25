@@ -6,5 +6,5 @@ public class Refs {
     public static final String NAME = "Vintage Core";
     public static final String LOG_NAME = "Vintage Suite";
     public static final String VERSION = "@VERSION@";
-    public static final String MC_VERSION = "[1.4.7]";
+    public static final String MC_VERSION = "[1.5.2]";
 }

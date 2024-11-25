@@ -40,7 +40,7 @@ public class ToolHelper {
                         assert playerMP != null;
                         playerMP.playerNetServerHandler.sendPacketToPlayer(new Packet53BlockChange());
                     } else {
-                        Minecraft.getMinecraft().getSendQueue().addToSendQueue(new Packet14BlockDig());
+                        Minecraft.getMinecraft().getNetHandler().addToSendQueue(new Packet14BlockDig());
                     }
 
                 } else {
@@ -57,7 +57,7 @@ public class ToolHelper {
                         if (block.removeBlockByPlayer(world, player, x, y, z)) {
                             block.onBlockDestroyedByPlayer(world, x, y, z, blockMetadata);
                         }
-                        Minecraft.getMinecraft().getSendQueue().addToSendQueue(new Packet14BlockDig());
+                        Minecraft.getMinecraft().getNetHandler().addToSendQueue(new Packet14BlockDig());
                     }
                 }
                 return true;
