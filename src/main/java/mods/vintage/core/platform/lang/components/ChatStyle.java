@@ -3,7 +3,7 @@ package mods.vintage.core.platform.lang.components;
 import com.google.gson.*;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import mods.vintage.core.platform.lang.TextFormatter;
+import mods.vintage.core.platform.lang.ChatFormatting;
 
 import java.lang.reflect.Type;
 
@@ -13,7 +13,7 @@ public class ChatStyle {
      * The parent of this ChatStyle.  Used for looking up values that this instance does not override.
      */
     private ChatStyle parentStyle;
-    private TextFormatter color;
+    private ChatFormatting color;
     private Boolean bold;
     private Boolean italic;
     private Boolean underlined;
@@ -28,7 +28,7 @@ public class ChatStyle {
         /**
          * Gets the effective color of this ChatStyle.
          */
-        public TextFormatter getColor() {
+        public ChatFormatting getColor() {
             return null;
         }
 
@@ -71,7 +71,7 @@ public class ChatStyle {
          * Sets the color for this ChatStyle to the given value.  Only use color values for this; set other values using
          * the specific methods.
          */
-        public ChatStyle setColor(TextFormatter colorIn) {
+        public ChatStyle setColor(ChatFormatting colorIn) {
             throw new UnsupportedOperationException();
         }
 
@@ -157,7 +157,7 @@ public class ChatStyle {
     /**
      * Gets the effective color of this ChatStyle.
      */
-    public TextFormatter getColor() {
+    public ChatFormatting getColor() {
         return this.color == null ? this.getParent().getColor() : this.color;
     }
 
@@ -207,7 +207,7 @@ public class ChatStyle {
      * Sets the color for this ChatStyle to the given value.  Only use color values for this; set other values using the
      * specific methods.
      */
-    public ChatStyle setColor(TextFormatter colorIn) {
+    public ChatStyle setColor(ChatFormatting colorIn) {
         this.color = colorIn;
         return this;
     }
@@ -281,23 +281,23 @@ public class ChatStyle {
             }
 
             if (this.getBold()) {
-                stringbuilder.append(TextFormatter.BOLD);
+                stringbuilder.append(ChatFormatting.BOLD);
             }
 
             if (this.getItalic()) {
-                stringbuilder.append(TextFormatter.ITALIC);
+                stringbuilder.append(ChatFormatting.ITALIC);
             }
 
             if (this.getUnderlined()) {
-                stringbuilder.append(TextFormatter.UNDERLINE);
+                stringbuilder.append(ChatFormatting.UNDERLINE);
             }
 
             if (this.getObfuscated()) {
-                stringbuilder.append(TextFormatter.OBFUSCATED);
+                stringbuilder.append(ChatFormatting.OBFUSCATED);
             }
 
             if (this.getStrikethrough()) {
-                stringbuilder.append(TextFormatter.STRIKETHROUGH);
+                stringbuilder.append(ChatFormatting.STRIKETHROUGH);
             }
 
             return stringbuilder.toString();
@@ -389,7 +389,7 @@ public class ChatStyle {
                     }
 
                     if (jsonobject.has("color")) {
-                        chatstyle.color = (TextFormatter) p_deserialize_3_.deserialize(jsonobject.get("color"), TextFormatter.class);
+                        chatstyle.color = (ChatFormatting) p_deserialize_3_.deserialize(jsonobject.get("color"), ChatFormatting.class);
                     }
 
                     return chatstyle;

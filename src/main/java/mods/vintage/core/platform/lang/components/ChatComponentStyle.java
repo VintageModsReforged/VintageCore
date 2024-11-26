@@ -5,7 +5,7 @@ import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import mods.vintage.core.platform.lang.TextFormatter;
+import mods.vintage.core.platform.lang.ChatFormatting;
 
 import java.util.Iterator;
 import java.util.List;
@@ -100,7 +100,7 @@ public abstract class ChatComponentStyle implements IChatComponent {
             IChatComponent ichatcomponent = (IChatComponent) iterator.next();
             stringbuilder.append(ichatcomponent.getChatStyle().getFormattingCode());
             stringbuilder.append(ichatcomponent.getUnformattedTextForChat());
-            stringbuilder.append(TextFormatter.RESET);
+            stringbuilder.append(ChatFormatting.RESET);
         }
 
         return stringbuilder.toString();
