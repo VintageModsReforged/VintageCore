@@ -14,6 +14,10 @@ public class RecipeHelper {
             for (int i = 0; i < recipeList.size(); i++) {
                 if (StackHelper.areStacksEqual(stack, recipeList.get(i).getRecipeOutput())) {
                     recipeList.remove(i);
+                    // when you remove an item from the list, the index of the subsequent elements decrease by one.
+                    // In this loop where we’re incrementing i,
+                    // this would cause it to skip the element that moves into the current index position after removal
+                    i--;
                 }
             }
         }
