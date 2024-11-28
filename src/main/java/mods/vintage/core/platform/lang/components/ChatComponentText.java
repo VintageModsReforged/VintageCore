@@ -2,6 +2,7 @@ package mods.vintage.core.platform.lang.components;
 
 import java.util.Iterator;
 
+@SuppressWarnings("all")
 public class ChatComponentText extends ChatComponentStyle {
     private final String text;
     private static final String __OBFID = "CL_00001269";
@@ -11,16 +12,7 @@ public class ChatComponentText extends ChatComponentStyle {
     }
 
     /**
-     * Gets the text value of this ChatComponentText.  TODO: what are getUnformattedText and getUnformattedTextForChat
-     * missing that made someone decide to create a third equivalent method that only ChatComponentText can implement?
-     */
-    public String getChatComponentText_TextValue() {
-        return this.text;
-    }
-
-    /**
-     * Gets the text of this component, without any special formatting codes added, for chat.  TODO: why is this two
-     * different methods?
+     * Gets the text of this component, without any special formatting codes added, for chat.
      */
     public String getUnformattedTextForChat() {
         return this.text;
@@ -42,18 +34,18 @@ public class ChatComponentText extends ChatComponentStyle {
         return chatcomponenttext;
     }
 
-    public boolean equals(Object p_equals_1_) {
-        if (this == p_equals_1_) {
+    public boolean equals(Object object) {
+        if (this == object) {
             return true;
-        } else if (!(p_equals_1_ instanceof ChatComponentText)) {
+        } else if (!(object instanceof ChatComponentText)) {
             return false;
         } else {
-            ChatComponentText chatcomponenttext = (ChatComponentText) p_equals_1_;
-            return this.text.equals(chatcomponenttext.getChatComponentText_TextValue()) && super.equals(p_equals_1_);
+            ChatComponentText chatcomponenttext = (ChatComponentText) object;
+            return this.text.equals(chatcomponenttext.getUnformattedTextForChat()) && super.equals(object);
         }
     }
 
     public String toString() {
-        return "TextComponent{text=\'" + this.text + '\'' + ", siblings=" + this.siblings + ", style=" + this.getChatStyle() + '}';
+        return "Component{text=\'" + this.text + '\'' + ", siblings=" + this.siblings + ", style=" + this.getChatStyle() + '}';
     }
 }

@@ -1,12 +1,11 @@
 package mods.vintage.core.platform.lang.components;
 
 import com.google.gson.*;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.vintage.core.platform.lang.ChatFormatting;
 
 import java.lang.reflect.Type;
 
+@SuppressWarnings("all")
 public class ChatStyle {
 
     /**
@@ -79,7 +78,7 @@ public class ChatStyle {
          * Sets whether or not text of this ChatStyle should be in bold.  Set to false if, e.g., the parent style is
          * bold and you want text of this style to be unbolded.
          */
-        public ChatStyle setBold(Boolean p_150227_1_) {
+        public ChatStyle setBold(Boolean bold) {
             throw new UnsupportedOperationException();
         }
 
@@ -87,7 +86,7 @@ public class ChatStyle {
          * Sets whether or not text of this ChatStyle should be italicized.  Set to false if, e.g., the parent style is
          * italicized and you want to override that for this style.
          */
-        public ChatStyle setItalic(Boolean p_150217_1_) {
+        public ChatStyle setItalic(Boolean italicized) {
             throw new UnsupportedOperationException();
         }
 
@@ -95,7 +94,7 @@ public class ChatStyle {
          * Sets whether or not to format text of this ChatStyle using strikethrough.  Set to false if, e.g., the parent
          * style uses strikethrough and you want to override that for this style.
          */
-        public ChatStyle setStrikethrough(Boolean p_150225_1_) {
+        public ChatStyle setStrikethrough(Boolean strikethrough) {
             throw new UnsupportedOperationException();
         }
 
@@ -103,7 +102,7 @@ public class ChatStyle {
          * Sets whether or not text of this ChatStyle should be underlined.  Set to false if, e.g., the parent style is
          * underlined and you want to override that for this style.
          */
-        public ChatStyle setUnderlined(Boolean p_150228_1_) {
+        public ChatStyle setUnderlined(Boolean underlined) {
             throw new UnsupportedOperationException();
         }
 
@@ -111,7 +110,7 @@ public class ChatStyle {
          * Sets whether or not text of this ChatStyle should be obfuscated.  Set to false if, e.g., the parent style is
          * obfuscated and you want to override that for this style.
          */
-        public ChatStyle setObfuscated(Boolean p_150237_1_) {
+        public ChatStyle setObfuscated(Boolean obfuscated) {
             throw new UnsupportedOperationException();
         }
 
@@ -119,7 +118,7 @@ public class ChatStyle {
          * Sets the fallback ChatStyle to use if this ChatStyle does not override some value.  Without a parent, obvious
          * defaults are used (bold: false, underlined: false, etc).
          */
-        public ChatStyle setParentStyle(ChatStyle p_150221_1_) {
+        public ChatStyle setParentStyle(ChatStyle parentStyle) {
             throw new UnsupportedOperationException();
         }
 
@@ -147,7 +146,6 @@ public class ChatStyle {
         /**
          * Gets the equivalent text formatting code for this style, without the initial section sign (U+00A7) character.
          */
-        @SideOnly(Side.CLIENT)
         public String getFormattingCode() {
             return "";
         }
@@ -216,8 +214,8 @@ public class ChatStyle {
      * Sets whether or not text of this ChatStyle should be in bold.  Set to false if, e.g., the parent style is bold
      * and you want text of this style to be unbolded.
      */
-    public ChatStyle setBold(Boolean p_150227_1_) {
-        this.bold = p_150227_1_;
+    public ChatStyle setBold(Boolean bold) {
+        this.bold = bold;
         return this;
     }
 
@@ -225,8 +223,8 @@ public class ChatStyle {
      * Sets whether or not text of this ChatStyle should be italicized.  Set to false if, e.g., the parent style is
      * italicized and you want to override that for this style.
      */
-    public ChatStyle setItalic(Boolean p_150217_1_) {
-        this.italic = p_150217_1_;
+    public ChatStyle setItalic(Boolean italicized) {
+        this.italic = italicized;
         return this;
     }
 
@@ -234,8 +232,8 @@ public class ChatStyle {
      * Sets whether or not to format text of this ChatStyle using strikethrough.  Set to false if, e.g., the parent
      * style uses strikethrough and you want to override that for this style.
      */
-    public ChatStyle setStrikethrough(Boolean p_150225_1_) {
-        this.strikethrough = p_150225_1_;
+    public ChatStyle setStrikethrough(Boolean strikethrough) {
+        this.strikethrough = strikethrough;
         return this;
     }
 
@@ -243,8 +241,8 @@ public class ChatStyle {
      * Sets whether or not text of this ChatStyle should be underlined.  Set to false if, e.g., the parent style is
      * underlined and you want to override that for this style.
      */
-    public ChatStyle setUnderlined(Boolean p_150228_1_) {
-        this.underlined = p_150228_1_;
+    public ChatStyle setUnderlined(Boolean underlined) {
+        this.underlined = underlined;
         return this;
     }
 
@@ -252,8 +250,8 @@ public class ChatStyle {
      * Sets whether or not text of this ChatStyle should be obfuscated.  Set to false if, e.g., the parent style is
      * obfuscated and you want to override that for this style.
      */
-    public ChatStyle setObfuscated(Boolean p_150237_1_) {
-        this.obfuscated = p_150237_1_;
+    public ChatStyle setObfuscated(Boolean obfuscated) {
+        this.obfuscated = obfuscated;
         return this;
     }
 
@@ -261,15 +259,15 @@ public class ChatStyle {
      * Sets the fallback ChatStyle to use if this ChatStyle does not override some value.  Without a parent, obvious
      * defaults are used (bold: false, underlined: false, etc).
      */
-    public ChatStyle setParentStyle(ChatStyle p_150221_1_) {
-        this.parentStyle = p_150221_1_;
+    public ChatStyle setParentStyle(ChatStyle parentStyle) {
+        this.parentStyle = parentStyle;
         return this;
     }
 
     /**
      * Gets the equivalent text formatting code for this style, without the initial section sign (U+00A7) character.
      */
-    @SideOnly(Side.CLIENT)
+
     public String getFormattingCode() {
         if (this.isEmpty()) {
             return this.parentStyle != null ? this.parentStyle.getFormattingCode() : "";
@@ -360,10 +358,10 @@ public class ChatStyle {
     public static class Serializer implements JsonDeserializer, JsonSerializer {
         private static final String __OBFID = "CL_00001268";
 
-        public ChatStyle deserialize(JsonElement p_deserialize_1_, Type p_deserialize_2_, JsonDeserializationContext p_deserialize_3_) {
-            if (p_deserialize_1_.isJsonObject()) {
+        public ChatStyle deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext context) {
+            if (jsonElement.isJsonObject()) {
                 ChatStyle chatstyle = new ChatStyle();
-                JsonObject jsonobject = p_deserialize_1_.getAsJsonObject();
+                JsonObject jsonobject = jsonElement.getAsJsonObject();
 
                 if (jsonobject == null) {
                     return null;
@@ -389,7 +387,7 @@ public class ChatStyle {
                     }
 
                     if (jsonobject.has("color")) {
-                        chatstyle.color = (ChatFormatting) p_deserialize_3_.deserialize(jsonobject.get("color"), ChatFormatting.class);
+                        chatstyle.color = (ChatFormatting) context.deserialize(jsonobject.get("color"), ChatFormatting.class);
                     }
 
                     return chatstyle;
@@ -399,42 +397,42 @@ public class ChatStyle {
             }
         }
 
-        public JsonElement serialize(ChatStyle p_serialize_1_, Type p_serialize_2_, JsonSerializationContext p_serialize_3_) {
-            if (p_serialize_1_.isEmpty()) {
+        public JsonElement serialize(ChatStyle chatStyle, Type type, JsonSerializationContext context) {
+            if (chatStyle.isEmpty()) {
                 return null;
             } else {
                 JsonObject jsonobject = new JsonObject();
 
-                if (p_serialize_1_.bold != null) {
-                    jsonobject.addProperty("bold", p_serialize_1_.bold);
+                if (chatStyle.bold != null) {
+                    jsonobject.addProperty("bold", chatStyle.bold);
                 }
 
-                if (p_serialize_1_.italic != null) {
-                    jsonobject.addProperty("italic", p_serialize_1_.italic);
+                if (chatStyle.italic != null) {
+                    jsonobject.addProperty("italic", chatStyle.italic);
                 }
 
-                if (p_serialize_1_.underlined != null) {
-                    jsonobject.addProperty("underlined", p_serialize_1_.underlined);
+                if (chatStyle.underlined != null) {
+                    jsonobject.addProperty("underlined", chatStyle.underlined);
                 }
 
-                if (p_serialize_1_.strikethrough != null) {
-                    jsonobject.addProperty("strikethrough", p_serialize_1_.strikethrough);
+                if (chatStyle.strikethrough != null) {
+                    jsonobject.addProperty("strikethrough", chatStyle.strikethrough);
                 }
 
-                if (p_serialize_1_.obfuscated != null) {
-                    jsonobject.addProperty("obfuscated", p_serialize_1_.obfuscated);
+                if (chatStyle.obfuscated != null) {
+                    jsonobject.addProperty("obfuscated", chatStyle.obfuscated);
                 }
 
-                if (p_serialize_1_.color != null) {
-                    jsonobject.add("color", p_serialize_3_.serialize(p_serialize_1_.color));
+                if (chatStyle.color != null) {
+                    jsonobject.add("color", context.serialize(chatStyle.color));
                 }
 
                 return jsonobject;
             }
         }
 
-        public JsonElement serialize(Object p_serialize_1_, Type p_serialize_2_, JsonSerializationContext p_serialize_3_) {
-            return this.serialize((ChatStyle) p_serialize_1_, p_serialize_2_, p_serialize_3_);
+        public JsonElement serialize(Object object, Type type, JsonSerializationContext context) {
+            return this.serialize((ChatStyle) object, type, context);
         }
     }
 }
