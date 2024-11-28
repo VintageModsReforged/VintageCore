@@ -3,13 +3,12 @@ package mods.vintage.core.platform.lang.components;
 import com.google.common.base.Function;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.vintage.core.platform.lang.ChatFormatting;
 
 import java.util.Iterator;
 import java.util.List;
 
+@SuppressWarnings("all")
 public abstract class ChatComponentStyle implements IChatComponent {
     /**
      * The later siblings of this component.  If this component turns the text bold, that will apply to all the siblings
@@ -73,8 +72,7 @@ public abstract class ChatComponentStyle implements IChatComponent {
     }
 
     /**
-     * Gets the text of this component, without any special formatting codes added.  TODO: why is this two different
-     * methods?
+     * Gets the text of this component, without any special formatting codes added.
      */
     public final String getUnformattedText() {
         StringBuilder stringbuilder = new StringBuilder();
@@ -91,7 +89,7 @@ public abstract class ChatComponentStyle implements IChatComponent {
     /**
      * Gets the text of this component, with formatting codes added for rendering.
      */
-    @SideOnly(Side.CLIENT)
+
     public final String getFormattedText() {
         StringBuilder stringbuilder = new StringBuilder();
         Iterator iterator = this.iterator();
@@ -114,37 +112,37 @@ public abstract class ChatComponentStyle implements IChatComponent {
         Iterator iterator = Iterators.concat(Iterators.transform(components.iterator(), new Function() {
             private static final String __OBFID = "CL_00001258";
 
-            public Iterator apply(IChatComponent p_apply_1_) {
-                return p_apply_1_.iterator();
+            public Iterator apply(IChatComponent chatComponent) {
+                return chatComponent.iterator();
             }
 
-            public Object apply(Object p_apply_1_) {
-                return this.apply((IChatComponent) p_apply_1_);
+            public Object apply(Object object) {
+                return this.apply((IChatComponent) object);
             }
         }));
         iterator = Iterators.transform(iterator, new Function() {
             private static final String __OBFID = "CL_00001259";
 
-            public IChatComponent apply(IChatComponent p_apply_1_) {
-                IChatComponent ichatcomponent1 = p_apply_1_.createCopy();
+            public IChatComponent apply(IChatComponent chatComponent) {
+                IChatComponent ichatcomponent1 = chatComponent.createCopy();
                 ichatcomponent1.setChatStyle(ichatcomponent1.getChatStyle().createDeepCopy());
                 return ichatcomponent1;
             }
 
-            public Object apply(Object p_apply_1_) {
-                return this.apply((IChatComponent) p_apply_1_);
+            public Object apply(Object object) {
+                return this.apply((IChatComponent) object);
             }
         });
         return iterator;
     }
 
-    public boolean equals(Object p_equals_1_) {
-        if (this == p_equals_1_) {
+    public boolean equals(Object object) {
+        if (this == object) {
             return true;
-        } else if (!(p_equals_1_ instanceof ChatComponentStyle)) {
+        } else if (!(object instanceof ChatComponentStyle)) {
             return false;
         } else {
-            ChatComponentStyle chatcomponentstyle = (ChatComponentStyle) p_equals_1_;
+            ChatComponentStyle chatcomponentstyle = (ChatComponentStyle) object;
             return this.siblings.equals(chatcomponentstyle.siblings) && this.getChatStyle().equals(chatcomponentstyle.getChatStyle());
         }
     }
@@ -154,6 +152,6 @@ public abstract class ChatComponentStyle implements IChatComponent {
     }
 
     public String toString() {
-        return "BaseComponent{style=" + this.style + ", siblings=" + this.siblings + '}';
+        return "Component{style=" + this.style + ", siblings=" + this.siblings + '}';
     }
 }

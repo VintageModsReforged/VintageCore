@@ -4,7 +4,9 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 import mods.vintage.core.VintageCore;
 import net.minecraft.client.Minecraft;
 
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Properties;
 

@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@SuppressWarnings("all")
 public class ChatComponentTranslation extends ChatComponentStyle {
     private final String key;
     private final Object[] formatArgs;
@@ -169,8 +170,7 @@ public class ChatComponentTranslation extends ChatComponentStyle {
     }
 
     /**
-     * Gets the text of this component, without any special formatting codes added, for chat.  TODO: why is this two
-     * different methods?
+     * Gets the text of this component, without any special formatting codes added, for chat.
      */
     public String getUnformattedTextForChat() {
         this.ensureInitialized();
@@ -211,14 +211,14 @@ public class ChatComponentTranslation extends ChatComponentStyle {
         return chatcomponenttranslation;
     }
 
-    public boolean equals(Object p_equals_1_) {
-        if (this == p_equals_1_) {
+    public boolean equals(Object object) {
+        if (this == object) {
             return true;
-        } else if (!(p_equals_1_ instanceof ChatComponentTranslation)) {
+        } else if (!(object instanceof ChatComponentTranslation)) {
             return false;
         } else {
-            ChatComponentTranslation chatcomponenttranslation = (ChatComponentTranslation) p_equals_1_;
-            return Arrays.equals(this.formatArgs, chatcomponenttranslation.formatArgs) && this.key.equals(chatcomponenttranslation.key) && super.equals(p_equals_1_);
+            ChatComponentTranslation chatcomponenttranslation = (ChatComponentTranslation) object;
+            return Arrays.equals(this.formatArgs, chatcomponenttranslation.formatArgs) && this.key.equals(chatcomponenttranslation.key) && super.equals(object);
         }
     }
 
@@ -230,7 +230,7 @@ public class ChatComponentTranslation extends ChatComponentStyle {
     }
 
     public String toString() {
-        return "TranslatableComponent{key=\'" + this.key + '\'' + ", args=" + Arrays.toString(this.formatArgs) + ", siblings=" + this.siblings + ", style=" + this.getChatStyle() + '}';
+        return "Component{translate=\'" + this.key + '\'' + ", args=" + Arrays.toString(this.formatArgs) + ", siblings=" + this.siblings + ", style=" + this.getChatStyle() + '}';
     }
 
     public String getKey() {
