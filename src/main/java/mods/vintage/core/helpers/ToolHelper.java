@@ -11,7 +11,7 @@ import net.minecraftforge.common.ForgeHooks;
 
 public class ToolHelper {
 
-    public boolean harvestBlock(World world, int x, int y, int z, EntityPlayer player) {
+    public static boolean harvestBlock(World world, int x, int y, int z, EntityPlayer player) {
         if (world.isAirBlock(x, y, z)) {
             return false;
         } else {
