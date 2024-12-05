@@ -4,7 +4,9 @@ import com.google.common.collect.AbstractIterator;
 import net.jcip.annotations.Immutable;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 @Immutable
 public class BlockPos extends Vec3i {
@@ -31,6 +33,15 @@ public class BlockPos extends Vec3i {
 
     public BlockPos toImmutable() {
         return this;
+    }
+
+    public static List<MutableBlockPos> getAllInBox(BlockPos from, BlockPos to) {
+        Iterable<MutableBlockPos> area = getAllInBoxMutable(from, to);
+        List<MutableBlockPos> areaList = new ArrayList<MutableBlockPos>();
+        for (MutableBlockPos pos : area) {
+            areaList.add(pos);
+        }
+        return areaList;
     }
 
     public static Iterable<MutableBlockPos> getAllInBoxMutable(BlockPos from, BlockPos to) {
