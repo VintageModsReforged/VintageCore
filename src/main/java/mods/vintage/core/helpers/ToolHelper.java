@@ -1,13 +1,20 @@
 package mods.vintage.core.helpers;
 
+import com.google.common.collect.Lists;
+import mods.vintage.core.helpers.pos.BlockPos;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.packet.Packet14BlockDig;
 import net.minecraft.network.packet.Packet53BlockChange;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class ToolHelper {
 
@@ -63,5 +70,29 @@ public class ToolHelper {
                 return true;
             }
         }
+    }
+
+    public static List<BlockPos.MutableBlockPos> getAOE(EntityPlayer player, BlockPos pos, int radius) {
+        World world = player.worldObj;
+        MovingObjectPosition mop = BlockHelper.raytraceFromEntity(world, player, false, 4.5D);
+        int xRange = radius, yRange = radius, zRange = radius;
+        if (mop == null) { // cancel when rayTrace fails
+            return new ArrayList<BlockPos.MutableBlockPos>();
+        }
+        switch (mop.sideHit) {
+            case 0:
+            case 1:
+                yRange = 0;
+                break;
+            case 2:
+            case 3:
+                zRange = 0;
+                break;
+            case 4:
+            case 5:
+                xRange = 0;
+                break;
+        }
+        return BlockPos.getAllInBox(pos.add(-xRange, -yRange, -zRange), pos.add(xRange, yRange, zRange));
     }
 }
