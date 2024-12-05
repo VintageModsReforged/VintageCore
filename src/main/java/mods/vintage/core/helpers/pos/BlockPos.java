@@ -35,11 +35,11 @@ public class BlockPos extends Vec3i {
         return this;
     }
 
-    public static List<MutableBlockPos> getAllInBox(BlockPos from, BlockPos to) {
+    public static List<BlockPos> getAllInBox(BlockPos from, BlockPos to) {
         Iterable<MutableBlockPos> area = getAllInBoxMutable(from, to);
-        List<MutableBlockPos> areaList = new ArrayList<MutableBlockPos>();
-        for (MutableBlockPos pos : area) {
-            areaList.add(pos);
+        List<BlockPos> areaList = new ArrayList<BlockPos>();
+        for (BlockPos pos : area) {
+            areaList.add(pos.toImmutable());
         }
         return areaList;
     }

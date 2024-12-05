@@ -3,7 +3,16 @@ package mods.vintage.core.helpers;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.Property;
 
+import java.util.Arrays;
+
 public class ConfigHelper {
+
+    public static String[] getStrings(Configuration cfg, String cat, String tag, String[] defaultValue, String comment) {
+        comment = comment.replace("{t}", tag) + "\n";
+        Property prop = cfg.get(cat, tag, defaultValue);
+        prop.comment = comment + "Default: " + Arrays.toString(defaultValue);
+        return prop.valueList;
+    }
 
     public static String getString(Configuration cfg, String cat, String tag, String defaultValue, String comment) {
         comment = comment.replace("{t}", tag) + "\n";

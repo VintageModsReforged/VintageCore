@@ -70,12 +70,12 @@ public class ToolHelper {
         }
     }
 
-    public static List<BlockPos.MutableBlockPos> getAOE(EntityPlayer player, BlockPos pos, int radius) {
+    public static List<BlockPos> getAOE(EntityPlayer player, BlockPos pos, int radius) {
         World world = player.worldObj;
         MovingObjectPosition mop = BlockHelper.raytraceFromEntity(world, player, false, 4.5D);
         int xRange = radius, yRange = radius, zRange = radius;
         if (mop == null) { // cancel when rayTrace fails
-            return new ArrayList<BlockPos.MutableBlockPos>();
+            return new ArrayList<BlockPos>();
         }
         switch (mop.sideHit) {
             case 0:
