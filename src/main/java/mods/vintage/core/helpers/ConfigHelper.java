@@ -2,6 +2,9 @@ package mods.vintage.core.helpers;
 
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.Property;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Arrays;
 
 public class ConfigHelper {
 
@@ -10,6 +13,13 @@ public class ConfigHelper {
         Property prop = cfg.get(cat, tag, defaultValue);
         prop.comment = comment + "Default: " + defaultValue;
         return prop.getString();
+    }
+
+    public static String[] getStrings(Configuration cfg, String cat, String tag, String[] defaultValue, String comment) {
+        comment = comment.replace("{t}", tag) + "\n";
+        Property prop = cfg.get(cat, tag, defaultValue);
+        prop.comment = comment + "Default: " + Arrays.toString(defaultValue);
+        return prop.getStringList();
     }
 
     public static int getId(Configuration cfg, String cat, String tag, int defaultValue, String comment) {
