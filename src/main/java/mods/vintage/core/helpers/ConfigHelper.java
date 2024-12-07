@@ -22,16 +22,15 @@ public class ConfigHelper {
         return prop.getStringList();
     }
 
-    public static int getId(Configuration cfg, String cat, String tag, int defaultValue, String comment) {
-        comment = comment.replace("{t}", tag) + "\n";
+    public static int getId(Configuration cfg, String cat, String tag, int defaultValue) {
         Property prop = cfg.get(cat, tag, defaultValue);
-        prop.comment = comment + "Default: " + defaultValue;
+        prop.comment = "Default: " + defaultValue;
         int value = prop.getInt(defaultValue);
         prop.set(Integer.toString(value));
         return value;
     }
 
-    private static int getInt(Configuration cfg, String cat, String tag, int min, int max, int defaultValue, String comment) {
+    public static int getInt(Configuration cfg, String cat, String tag, int min, int max, int defaultValue, String comment) {
         comment = comment.replace("{t}", tag) + "\n";
         Property prop = cfg.get(cat, tag, defaultValue);
         prop.comment = comment + "Min: " + min + ", Max: " + max + ", Default: " + defaultValue;
@@ -42,7 +41,7 @@ public class ConfigHelper {
         return value;
     }
 
-    private static double getDouble(Configuration cfg, String cat, String tag, double min, double max, double defaultValue, String comment) {
+    public static double getDouble(Configuration cfg, String cat, String tag, double min, double max, double defaultValue, String comment) {
         comment = comment.replace("{t}", tag) + "\n";
         Property prop = cfg.get(cat, tag, defaultValue);
         prop.comment = comment + "Min: " + min + ", Max: " + max + ", Default: " + defaultValue;
@@ -53,7 +52,7 @@ public class ConfigHelper {
         return value;
     }
 
-    private static boolean getBoolean(Configuration cfg, String cat, String tag, boolean defaultValue, String comment) {
+    public static boolean getBoolean(Configuration cfg, String cat, String tag, boolean defaultValue, String comment) {
         comment = comment.replace("{t}", tag) + "\n";
         Property prop = cfg.get(cat, tag, defaultValue);
         prop.comment = comment + "Default: " + defaultValue;
