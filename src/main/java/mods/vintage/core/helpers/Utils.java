@@ -2,6 +2,7 @@ package mods.vintage.core.helpers;
 
 import java.lang.reflect.Array;
 
+@SuppressWarnings("all")
 public class Utils {
 
     public static boolean instanceOf(Object obj, String clazz) {
@@ -26,7 +27,7 @@ public class Utils {
         } else {
             throw new IllegalArgumentException("Arguments cannot both be null");
         }
-        @SuppressWarnings("unchecked") // type must be T
+        // type must be T
         final T[] newArray = (T[]) copyArrayGrow(array, type);
         newArray[newArray.length - 1] = element;
         return newArray;
