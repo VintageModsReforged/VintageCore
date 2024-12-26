@@ -2,6 +2,7 @@ package mods.vintage.core.helpers;
 
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -9,6 +10,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StackHelper {
+
+    public static boolean isBlock(ItemStack stack) {
+        String itemName = stack.toString();
+        return !itemName.contains("item") && !itemName.contains("null");
+    }
+
+    public static NBTTagCompound getOrCreateTag(ItemStack stack) {
+        NBTTagCompound tag = stack.getTagCompound();
+        if (tag == null) {
+            tag = new NBTTagCompound("tag");
+            stack.setTagCompound(tag);
+        }
+        return tag;
+    }
 
     public static boolean areStacksEqual(ItemStack aStack, ItemStack bStack) {
         return aStack != null && bStack != null &&

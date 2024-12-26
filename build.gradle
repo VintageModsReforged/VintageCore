@@ -31,6 +31,10 @@ volde {
 	}
 }
 
+repositories {
+	maven { url = "https://api.modrinth.com/maven" }
+}
+
 dependencies {
 	implementation 'com.google.code.gson:gson:2.11.0'
 	implementation 'net.jcip:jcip-annotations:1.0'
@@ -42,11 +46,7 @@ dependencies {
 		baseZip "net.minecraftforge:forge:${forgeVersion}:src@zip"
 		unmapClass(["bar", "bas"])
 	}
-	
-	//accessTransformers files("./src/main/resources/good_cool_ats.cfg")
-	
-	//coremodImplementation files("libs/name.jar")
-	//coremodImplementation files("libs/name.zip")
-	//modImplementation files("libs/name.jar")
-	//modImplementation files("libs/name.zip")
+
+	modImplementation("maven.modrinth:nei:1.4.7.4")
+	modImplementation("maven.modrinth:codechicken-core:0.8.1.6")
 }
