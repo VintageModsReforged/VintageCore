@@ -36,6 +36,12 @@ volde {
 	}
 }
 
+repositories {
+	maven {
+		url = "https://api.modrinth.com/maven"
+	}
+}
+
 dependencies {
 
 	implementation 'com.google.code.gson:gson:2.11.0'
@@ -45,4 +51,11 @@ dependencies {
 	minecraft "com.mojang:minecraft:${minecraftVersion}"
 	forge "net.minecraftforge:forge:${forgeVersion}:universal@zip"
 	mappings "net.minecraftforge:forge:${forgeVersion}:src@zip"
+
+	modImplementation("maven.modrinth:nei:1.5.2.28")
+	modImplementation("maven.modrinth:codechicken-core:0.8.7.3")
+}
+
+jar {
+	exclude ("**/codechicken/**")
 }
