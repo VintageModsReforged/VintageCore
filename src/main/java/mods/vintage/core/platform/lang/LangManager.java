@@ -14,6 +14,10 @@ public class LangManager {
 
     public static final LangManager THIS = new LangManager();
 
+    public static void loadCreativeTabName(String modid, String tabName) {
+        LanguageRegistry.instance().addStringLocalization("itemGroup." + modid, tabName);
+    }
+
     public <T extends ILangProvider> void registerLangProvider(T provider) {
         List<String> languages = provider.getLocalizationList();
         String modid = provider.getModid();
