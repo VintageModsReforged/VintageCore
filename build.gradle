@@ -2,51 +2,40 @@ buildscript {
 	repositories {
 		mavenCentral()
 		maven { url "https://maven.fabricmc.net" }
-		maven { url "https://repo.sleeping.town" } //Commented out to use the version of voldeloom in the settings.gradle includeBuild (hopefully??)
+		maven { url "https://repo.sleeping.town" }
 	}
 	dependencies {
-		classpath "agency.highlysuspect:voldeloom:2.2-SNAPSHOT"
+		classpath "agency.highlysuspect:voldeloom:2.4-SNAPSHOT"
 	}
 }
 
 apply plugin: "agency.highlysuspect.voldeloom"
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(11) //Last version able to set a --release as low as 6
-compileJava.options.release.set(6) //Forge doesn't understand classes compiled to versions of the class-file format newer than Java 6's
+java {
+	toolchain {
+		//Last version able to set a --release as low as 6.
+		languageVersion = JavaLanguageVersion.of(11)
+	}
+}
 
-String minecraftVersion = "1.4.7"
-String forgeVersion = "1.4.7-6.6.2.534"
-archivesBaseName = project.modid
-version = project.mod_version
+compileJava {
+	//Forge doesn't understand classes compiled to versions of the class-file format newer than Java 6's.
+	options.release.set(6)
+}
+
+String minecraftVersion = "1.6.4"
+String forgeVersion = "1.6.4-9.11.1.1345"
 
 volde {
-	forgeCapabilities {
-		srgsAsFallback = true
-	}
-	
 	runs {
 		client {
-			programArg "quaternary"
+			programArg "--username=quaternary"
 		}
 	}
 }
 
-repositories {
-	maven { url = "https://api.modrinth.com/maven" }
-}
-
 dependencies {
-	implementation 'com.google.code.gson:gson:2.11.0'
-	implementation 'net.jcip:jcip-annotations:1.0'
-	implementation 'org.jetbrains:annotations-java5:23.0.0'
 	minecraft "com.mojang:minecraft:${minecraftVersion}"
-	forge "net.minecraftforge:forge:${forgeVersion}:universal@zip"
-	
-	mappings volde.layered {
-		baseZip "net.minecraftforge:forge:${forgeVersion}:src@zip"
-		unmapClass(["bar", "bas"])
-	}
-
-	modImplementation("maven.modrinth:nei:1.4.7.4")
-	modImplementation("maven.modrinth:codechicken-core:0.8.1.6")
+	forge "net.minecraftforge:forge:${forgeVersion}:universal" //no @zip classifier this time
+	mappings "net.minecraftforge:forge:${forgeVersion}:src@zip"
 }
