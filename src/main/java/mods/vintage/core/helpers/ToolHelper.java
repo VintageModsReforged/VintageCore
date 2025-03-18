@@ -1,5 +1,6 @@
 package mods.vintage.core.helpers;
 
+import com.google.common.collect.ImmutableList;
 import mods.vintage.core.helpers.pos.BlockPos;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -11,13 +12,12 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Iterator;
 
 public class ToolHelper {
 
-    public static boolean harvestBlock(World world, int x, int y, int z, int metadata, EntityPlayer player) {
-        return harvestAndDrop(world, x, y, z, metadata, player, simpleHarvest());
+    public static boolean harvestBlock(World world, int x, int y, int z, EntityPlayer player) {
+        return harvestAndDrop(world, x, y, z, player, simpleHarvest());
     }
 
     private static IDropCallback simpleHarvest() {
@@ -34,7 +34,7 @@ public class ToolHelper {
         };
     }
 
-    public static boolean harvestAndDrop(World world, int x, int y, int z, int metadata, EntityPlayer player, IDropCallback callback) {
+    public static boolean harvestAndDrop(World world, int x, int y, int z, EntityPlayer player, IDropCallback callback) {
         if (world.isAirBlock(x, y, z)) {
             return false;
         } else {
@@ -43,6 +43,7 @@ public class ToolHelper {
                 playerMP = (EntityPlayerMP)player;
             }
             Block block = Block.blocksList[world.getBlockId(x, y, z)];
+            int metadata = world.getBlockMetadata(x, y, z);
             if (!ForgeHooks.canHarvestBlock(block, player, metadata)) {
                 return false;
             } else {
@@ -93,12 +94,12 @@ public class ToolHelper {
         void handleClient(World world, Block block, int x, int y, int z, int metadata, EntityPlayer player);
     }
 
-    public static List<BlockPos> getAOE(EntityPlayer player, BlockPos pos, int radius) {
+    public static ImmutableList<BlockPos> getAOE(EntityPlayer player, BlockPos pos, int radius) {
         World world = player.worldObj;
         MovingObjectPosition mop = BlockHelper.raytraceFromEntity(world, player, false, 4.5D);
         int xRange = radius, yRange = radius, zRange = radius;
         if (mop == null) { // cancel when rayTrace fails
-            return new ArrayList<BlockPos>();
+            return ImmutableList.of();
         }
         switch (mop.sideHit) {
             case 0:
@@ -114,6 +115,12 @@ public class ToolHelper {
                 xRange = 0;
                 break;
         }
-        return BlockPos.getAllInBox(pos.add(-xRange, -yRange, -zRange), pos.add(xRange, yRange, zRange));
+
+        ImmutableList.Builder<BlockPos> builder = ImmutableList.builder();
+        Iterable<BlockPos> area = BlockPos.getAllInBox(pos.add(-xRange, -yRange, -zRange), pos.add(xRange, yRange, zRange));
+        for (Iterator<BlockPos> it = area.iterator(); it.hasNext();) {
+            builder.add(it.next().toImmutable());
+        }
+        return builder.build();
     }
 }
