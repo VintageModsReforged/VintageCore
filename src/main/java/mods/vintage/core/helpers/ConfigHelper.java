@@ -9,11 +9,8 @@ import java.util.Arrays;
 
 public class ConfigHelper {
 
-    public static String getString(Configuration cfg, String cat, String tag, String defaultValue, String comment) {
-        comment = comment.replace("{t}", tag) + "\n";
-        Property prop = cfg.get(cat, tag, defaultValue);
-        prop.comment = comment + "Default: " + defaultValue;
-        return prop.getString();
+    public static Configuration getConfigFor(String child) {
+        return new Configuration(new File((File) FMLInjectionData.data()[6], "config/" + child + ".cfg"));
     }
 
     public static String[] getStrings(Configuration cfg, String cat, String tag, String[] defaultValue, String comment) {
@@ -25,6 +22,13 @@ public class ConfigHelper {
 
     public static String[] getLocalizations(Configuration cfg, String[] defaultValue, String modid) {
         return getStrings(cfg, "general", "localizations", defaultValue, "Supported localizations. Place your <name>.lang file in config/" + modid + "/lang folder or inside mods/" + modid + "/lang inside modJar");
+    }
+
+    public static String getString(Configuration cfg, String cat, String tag, String defaultValue, String comment) {
+        comment = comment.replace("{t}", tag) + "\n";
+        Property prop = cfg.get(cat, tag, defaultValue);
+        prop.comment = comment + "Default: " + defaultValue;
+        return prop.getString();
     }
 
     public static int getId(Configuration cfg, String cat, String tag, int defaultValue) {
@@ -62,9 +66,5 @@ public class ConfigHelper {
         Property prop = cfg.get(cat, tag, defaultValue);
         prop.comment = comment + "Default: " + defaultValue;
         return prop.getBoolean(defaultValue);
-    }
-
-    public static Configuration getConfigFor(String child) {
-        return new Configuration(new File((File) FMLInjectionData.data()[6], "config/" + child + ".cfg"));
     }
 }
