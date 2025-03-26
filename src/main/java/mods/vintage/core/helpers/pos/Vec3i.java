@@ -1,23 +1,28 @@
 package mods.vintage.core.helpers.pos;
 
 import com.google.common.base.Objects;
-import net.jcip.annotations.Immutable;
+import mods.vintage.core.annotation.Immutable;
 import net.minecraft.util.MathHelper;
 
 @Immutable
 public class Vec3i implements Comparable<Vec3i> {
+
+    /**
+     * An immutable vector with zero as all coordinates.
+     */
+    public static final Vec3i NULL_VECTOR = new Vec3i(0, 0, 0);
     /**
      * X coordinate
      */
-    private final int x;
+    private int x;
     /**
      * Y coordinate
      */
-    private final int y;
+    private int y;
     /**
      * Z coordinate
      */
-    private final int z;
+    private int z;
 
     public Vec3i(int xIn, int yIn, int zIn) {
         this.x = xIn;
@@ -50,23 +55,67 @@ public class Vec3i implements Comparable<Vec3i> {
         return this.z;
     }
 
-    @Override
-    public boolean equals(Object object) {
-        if (this == object) {
-            return true;
-        } else if (!(object instanceof Vec3i)) {
-            return false;
-        } else {
-            Vec3i vec3i = (Vec3i) object;
+    /**
+     * Calculate the cross product of this and the given Vector
+     */
+    public Vec3i crossProduct(Vec3i vec) {
+        return new Vec3i(this.getY() * vec.getZ() - this.getZ() * vec.getY(), this.getZ() * vec.getX() - this.getX() * vec.getZ(), this.getX() * vec.getY() - this.getY() * vec.getX());
+    }
 
-            if (this.getX() != vec3i.getX()) {
-                return false;
-            } else if (this.getY() != vec3i.getY()) {
-                return false;
-            } else {
-                return this.getZ() == vec3i.getZ();
-            }
-        }
+    public double getDistance(int xIn, int yIn, int zIn) {
+        double d0 = (double) (this.getX() - xIn);
+        double d1 = (double) (this.getY() - yIn);
+        double d2 = (double) (this.getZ() - zIn);
+        return Math.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
+    }
+
+    /**
+     * Calculate squared distance to the given coordinates
+     */
+    public double distanceSq(double toX, double toY, double toZ) {
+        double d0 = (double) this.getX() - toX;
+        double d1 = (double) this.getY() - toY;
+        double d2 = (double) this.getZ() - toZ;
+        return d0 * d0 + d1 * d1 + d2 * d2;
+    }
+
+    /**
+     * Compute square of distance from point x, y, z to center of this Block
+     */
+    public double distanceSqToCenter(double xIn, double yIn, double zIn) {
+        double d0 = (double) this.getX() + 0.5D - xIn;
+        double d1 = (double) this.getY() + 0.5D - yIn;
+        double d2 = (double) this.getZ() + 0.5D - zIn;
+        return d0 * d0 + d1 * d1 + d2 * d2;
+    }
+
+    /**
+     * Calculate squared distance to the given Vector
+     */
+    public double distanceSq(Vec3i to) {
+        return this.distanceSq((double) to.getX(), (double) to.getY(), (double) to.getZ());
+    }
+
+    protected void setX(int x) {
+        this.x = x;
+    }
+
+    protected void setY(int y) {
+        this.y = y;
+    }
+
+    protected void setZ(int z) {
+        this.z = z;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) return true;
+        if (!(other instanceof Vec3i)) return false;
+        Vec3i vector = (Vec3i) other;
+        return this.getX() == vector.getX() &&
+                this.getY() == vector.getY() &&
+                this.getZ() == vector.getZ();
     }
 
     @Override
