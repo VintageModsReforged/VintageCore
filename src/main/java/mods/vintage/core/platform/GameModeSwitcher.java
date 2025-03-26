@@ -12,7 +12,8 @@ public class GameModeSwitcher {
     private static int modeIndex = 0;
     private static final EnumGameType[] MODES = {
             EnumGameType.SURVIVAL,
-            EnumGameType.CREATIVE
+            EnumGameType.CREATIVE,
+            EnumGameType.ADVENTURE
     };
 
     public static void onKeyInput() {
