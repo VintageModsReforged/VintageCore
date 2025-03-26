@@ -23,8 +23,10 @@ compileJava {
 	options.release.set(6)
 }
 
-String minecraftVersion = "1.6.4"
-String forgeVersion = "1.6.4-9.11.1.1345"
+String minecraftVersion = project.minecraft
+String forgeVersion = project.minecraft_forge
+archivesBaseName = project.modid
+version = project.mod_version
 
 volde {
 	runs {
@@ -34,8 +36,25 @@ volde {
 	}
 }
 
+repositories {
+	maven {
+		url = "https://api.modrinth.com/maven"
+	}
+}
+
 dependencies {
+	implementation 'com.google.code.gson:gson:2.11.0'
+	implementation 'net.jcip:jcip-annotations:1.0'
+	implementation 'org.jetbrains:annotations-java5:23.0.0'
+
 	minecraft "com.mojang:minecraft:${minecraftVersion}"
 	forge "net.minecraftforge:forge:${forgeVersion}:universal" //no @zip classifier this time
 	mappings "net.minecraftforge:forge:${forgeVersion}:src@zip"
+
+	modImplementation("maven.modrinth:nei:1.6.1.9")
+	modImplementation("maven.modrinth:codechicken-core:0.9.0.9")
+}
+
+jar {
+	exclude ("**/codechicken/**")
 }

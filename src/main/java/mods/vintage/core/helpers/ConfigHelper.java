@@ -11,21 +11,21 @@ public class ConfigHelper {
         comment = comment.replace("{t}", tag) + "\n";
         Property prop = cfg.get(cat, tag, defaultValue);
         prop.comment = comment + "Default: " + Arrays.toString(defaultValue);
-        return prop.valueList;
+        return prop.getStringList();
     }
 
     public static String getString(Configuration cfg, String cat, String tag, String defaultValue, String comment) {
         comment = comment.replace("{t}", tag) + "\n";
         Property prop = cfg.get(cat, tag, defaultValue);
         prop.comment = comment + "Default: " + defaultValue;
-        return prop.value;
+        return prop.getString();
     }
 
     public static int getId(Configuration cfg, String cat, String tag, int defaultValue) {
         Property prop = cfg.get(cat, tag, defaultValue);
         prop.comment = "Default: " + defaultValue;
         int value = prop.getInt(defaultValue);
-        prop.value = Integer.toString(value);
+        prop.set(value);
         return value;
     }
 
@@ -36,7 +36,7 @@ public class ConfigHelper {
         int value = prop.getInt(defaultValue);
         value = Math.max(value, min);
         value = Math.min(value, max);
-        prop.value = Integer.toString(value);
+        prop.set(value);
         return value;
     }
 
@@ -47,7 +47,7 @@ public class ConfigHelper {
         double value = prop.getDouble(defaultValue);
         value = Math.max(value, min);
         value = Math.min(value, max);
-        prop.value = Double.toString(value);
+        prop.set(value);
         return value;
     }
 

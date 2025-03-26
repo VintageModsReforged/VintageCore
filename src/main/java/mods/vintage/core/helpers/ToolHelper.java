@@ -64,7 +64,7 @@ public class ToolHelper {
 
                         playerMP.playerNetServerHandler.sendPacketToPlayer(new Packet53BlockChange());
                     } else {
-                        Minecraft.getMinecraft().getSendQueue().addToSendQueue(new Packet14BlockDig());
+                        Minecraft.getMinecraft().getNetHandler().addToSendQueue(new Packet14BlockDig());
                     }
                 } else {
                     world.playAuxSFXAtEntity(player, 2001, x, y, z, world.getBlockId(x, y, z) | blockMetadata << 12);
@@ -80,7 +80,7 @@ public class ToolHelper {
                         if (block.removeBlockByPlayer(world, player, x, y, z)) {
                             block.onBlockDestroyedByPlayer(world, x, y, z, blockMetadata);
                         }
-                        Minecraft.getMinecraft().getSendQueue().addToSendQueue(new Packet14BlockDig());
+                        Minecraft.getMinecraft().getNetHandler().addToSendQueue(new Packet14BlockDig());
                         callback.handleClient(world, block, x, y, z, player);
                     }
                 }

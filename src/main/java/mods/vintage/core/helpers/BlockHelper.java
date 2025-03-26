@@ -103,7 +103,7 @@ public class BlockHelper {
                     int[] coords;
                     coords = getAdjacentCoordinatesForSide(x, y, z, shift);
                     if (world.getBlockId(coords[0], coords[1], coords[2]) == block) {
-                        world.setBlockMetadataWithNotify(coords[0], coords[1], coords[2], SIDE_OPPOSITE[meta]);
+                        world.setBlockMetadataWithNotify(coords[0], coords[1], coords[2], SIDE_OPPOSITE[meta], 0);
                         return SIDE_OPPOSITE[meta];
                     }
                 }
@@ -172,7 +172,7 @@ public class BlockHelper {
                     int[] coords;
                     coords = getAdjacentCoordinatesForSide(x, y, z, shift);
                     if (world.getBlockId(coords[0], coords[1], coords[2]) == block) {
-                        world.setBlockMetadataWithNotify(coords[0], coords[1], coords[2], SIDE_OPPOSITE[meta]);
+                        world.setBlockMetadataWithNotify(coords[0], coords[1], coords[2], SIDE_OPPOSITE[meta], 0);
                         return SIDE_OPPOSITE[meta];
                     }
                 }
