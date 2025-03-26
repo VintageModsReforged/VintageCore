@@ -1,17 +1,27 @@
 package mods.vintage.core.helpers;
 
+import cpw.mods.fml.relauncher.FMLInjectionData;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.Property;
 
+import java.io.File;
 import java.util.Arrays;
 
 public class ConfigHelper {
+
+    public static Configuration getConfigFor(String child) {
+        return new Configuration(new File((File) FMLInjectionData.data()[6], "config/" + child + ".cfg"));
+    }
 
     public static String[] getStrings(Configuration cfg, String cat, String tag, String[] defaultValue, String comment) {
         comment = comment.replace("{t}", tag) + "\n";
         Property prop = cfg.get(cat, tag, defaultValue);
         prop.comment = comment + "Default: " + Arrays.toString(defaultValue);
         return prop.getStringList();
+    }
+
+    public static String[] getLocalizations(Configuration cfg, String[] defaultValue, String modid) {
+        return getStrings(cfg, "general", "localizations", defaultValue, "Supported localizations. Place your <name>.lang file in config/" + modid + "/lang folder or inside mods/" + modid + "/lang inside modJar");
     }
 
     public static String getString(Configuration cfg, String cat, String tag, String defaultValue, String comment) {
