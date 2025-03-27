@@ -35,10 +35,10 @@ public class LangManager {
         boolean langPresent = false;
         String langFound = "";
         try {
-            VintageCore.LOGGER.info(String.format("Trying to load %1$s.lang file from /mods/%2$s/lang folder...", lang, modid));
-            stream = provider.getClass().getResourceAsStream("/mods/" + modid + "/lang/" + lang + ".lang"); // use the default .lang file from modJar
+            VintageCore.LOGGER.info(String.format("Trying to load %1$s.lang file from /assets/%2$s/lang folder...", lang, modid));
+            stream = provider.getClass().getResourceAsStream("/assets/" + modid + "/lang/" + lang + ".lang"); // use the default .lang file from modJar
             if (stream == null) {
-                VintageCore.LOGGER.info(String.format("Couldn't load %1$s.lang file from mods/%2$s/lang folder for %2$s... Did you put it in config/%2$s/lang folder? Let me check...", lang, modid));
+                VintageCore.LOGGER.info(String.format("Couldn't load %1$s.lang file from assets/%2$s/lang folder for %2$s... Did you put it in config/%2$s/lang folder? Let me check...", lang, modid));
                 VintageCore.LOGGER.info(String.format("Trying to load %1$s.lang file from /config/%2$s/lang folder...", lang, modid));
                 stream = new FileInputStream(Minecraft.getMinecraft().mcDataDir + "/config/" + modid + "/lang/" + lang + ".lang"); // use the lang files from config/modid/lang folder
                 if (stream != null) {
