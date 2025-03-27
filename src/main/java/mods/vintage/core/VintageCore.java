@@ -3,9 +3,11 @@ package mods.vintage.core;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 import mods.vintage.core.helpers.ConfigHelper;
+import mods.vintage.core.platform.commands.CommandGM;
 import mods.vintage.core.platform.events.ClientTickEvent;
 import mods.vintage.core.platform.lang.ILangProvider;
 import mods.vintage.core.platform.lang.LangManager;
@@ -35,6 +37,11 @@ public class VintageCore implements ILangProvider {
         if (CONFIG != null) CONFIG.save();
         TickRegistry.registerTickHandler(new ClientTickEvent(), Side.CLIENT);
         LangManager.THIS.registerLangProvider(this);
+    }
+
+    @Mod.ServerStarting
+    public void onServerStarting(FMLServerStartingEvent e) {
+        e.registerServerCommand(new CommandGM());
     }
 
     @Override
