@@ -42,7 +42,7 @@ public class CommandGM extends CommandBase {
 
         modeIndex = (modeIndex + 1) % MODES.length;
         playerMP.setGameType(MODES[modeIndex]);
-        playerMP.addChatMessage(FormattedTranslator.WHITE.format("chat.gamemode.switched", FormattedTranslator.GOLD.format(MAPPED_MODES.get(MODES[modeIndex]))));
+        playerMP.addChatMessage(FormattedTranslator.GRAY.format("chat.gamemode.switched", FormattedTranslator.GOLD.format(MAPPED_MODES.get(MODES[modeIndex]))));
     }
 
     @Override
