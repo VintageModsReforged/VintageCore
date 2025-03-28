@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class MultiItemRange {
     public ArrayList<ItemRange> ranges = new ArrayList<ItemRange>();
 
-    public MultiItemRange() {}
+    public MultiItemRange() { }
 
     public MultiItemRange add(ItemRange range) {
         this.ranges.add(range);
