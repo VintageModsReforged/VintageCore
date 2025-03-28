@@ -16,10 +16,18 @@ public class ItemBlockID {
     boolean usedID = false;
     private static final int ITEM_SHIFT = 256;
 
-    public ItemBlockID(Mode mode, String name, int defaultID) {
+    private ItemBlockID(Mode mode, String name, int defaultID) {
         this.mode = mode;
         this.name = name;
         this.id = defaultID;
+    }
+
+    public static ItemBlockID ofItem(String name, int defaultValue) {
+        return new ItemBlockID(Mode.ITEM, name, defaultValue);
+    }
+
+    public static ItemBlockID ofBlock(String name, int defaultValue) {
+        return new ItemBlockID(Mode.BLOCK, name, defaultValue);
     }
 
     public void init(Configuration config) {
