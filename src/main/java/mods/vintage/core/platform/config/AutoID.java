@@ -40,7 +40,7 @@ public class AutoID {
                     } else {
                         this.myValue = config.getItem(this.name, this.id);
                     }
-
+                    this.myValue.comment = "Default: " + this.id;
                     this.id = this.myValue.getInt();
                     this.stage = 2;
                 }
@@ -63,7 +63,7 @@ public class AutoID {
             } else {
                 this.myValue = config.getItem(this.name, this.id);
             }
-
+            this.myValue.comment = "Default: " + this.id;
             this.id = this.myValue.getInt();
             VintageCore.LOGGER.info("Automatically took " + this.mode + "ID " + this.id + " for " + this.name);
         }
