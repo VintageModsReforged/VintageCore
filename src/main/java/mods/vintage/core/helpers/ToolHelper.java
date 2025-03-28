@@ -12,9 +12,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 public class ToolHelper {
 
@@ -22,7 +20,7 @@ public class ToolHelper {
         return harvestAndDrop(world, x, y, z, player, simpleHarvest());
     }
 
-    private static IDropCallback simpleHarvest() {
+    public static IDropCallback simpleHarvest() {
         return new IDropCallback() {
             @Override
             public void handleServer(World world, Block block, int x, int y, int z, int metadata, EntityPlayer player) {
