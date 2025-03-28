@@ -10,7 +10,11 @@ import java.util.Arrays;
 public class ConfigHelper {
 
     public static Configuration getConfigFor(String child) {
-        return new Configuration(new File((File) FMLInjectionData.data()[6], "config/" + child + ".cfg"));
+        return new Configuration(getConfigFileFor(child));
+    }
+
+    public static File getConfigFileFor(String child) {
+        return new File((File) FMLInjectionData.data()[6], "config/" + child + ".cfg");
     }
 
     public static String[] getStrings(Configuration cfg, String cat, String tag, String[] defaultValue, String comment) {

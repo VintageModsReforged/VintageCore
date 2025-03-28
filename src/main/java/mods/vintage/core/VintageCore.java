@@ -2,12 +2,16 @@ package mods.vintage.core;
 
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 import mods.vintage.core.helpers.ConfigHelper;
 import mods.vintage.core.platform.commands.CommandGM;
+import mods.vintage.core.platform.config.ConfigHandler;
+import mods.vintage.core.platform.config.VintageConfig;
 import mods.vintage.core.platform.events.ClientTickEvent;
 import mods.vintage.core.platform.lang.ILangProvider;
 import mods.vintage.core.platform.lang.LangManager;
@@ -24,6 +28,8 @@ public class VintageCore implements ILangProvider {
 
     public static Configuration CONFIG;
     public static String[] LANGS;
+    public ConfigHandler configHandler = ConfigHandler.getFor(Refs.ID);
+    public VintageConfig config;
 
     public VintageCore() {
         LOGGER.setParent(FMLLog.getLogger());
@@ -37,6 +43,18 @@ public class VintageCore implements ILangProvider {
         if (CONFIG.hasChanged()) CONFIG.save();
         TickRegistry.registerTickHandler(new ClientTickEvent(), Side.CLIENT);
         LangManager.THIS.registerLangProvider(this);
+        this.config = new VintageConfig(ConfigHelper.getConfigFileFor("TestVintageCore"));
+        this.configHandler.initIDs(this.config);
+    }
+
+    @Mod.Init
+    public void init(FMLInitializationEvent e) {
+        this.configHandler.confirmIDs(this.config);
+    }
+
+    @Mod.PostInit
+    public void postInit(FMLPostInitializationEvent e) {
+        this.configHandler.confirmOwnership(this.config);
     }
 
     @Mod.ServerStarting
