@@ -21,7 +21,7 @@ public class ConfigHandler {
     }
 
     /**
-     * Initializes item and block IDs by scanning the given configuration class for fields of type {@link AutoID}.
+     * Initializes item and block IDs by scanning the given configuration class for fields of type {@link ItemBlockID}.
      * This method should be called during {@link cpw.mods.fml.common.event.FMLPreInitializationEvent} to ensure that IDs are set up before other
      * components of the mod rely on them.
      *
@@ -33,9 +33,9 @@ public class ConfigHandler {
         Class<?> configClass = config.getClass();
 
         for (Field field : configClass.getFields()) {
-            if (field.getType().isAssignableFrom(AutoID.class)) {
+            if (field.getType().isAssignableFrom(ItemBlockID.class)) {
                 try {
-                    AutoID autoID = (AutoID) field.get(configClass);
+                    ItemBlockID autoID = (ItemBlockID) field.get(configClass);
                     autoID.init(config);
                 } catch (IllegalArgumentException e) {
                     e.printStackTrace();
@@ -47,7 +47,7 @@ public class ConfigHandler {
     }
 
     /**
-     * Confirms item and block IDs by scanning the given configuration class for fields of type {@link AutoID}.
+     * Confirms item and block IDs by scanning the given configuration class for fields of type {@link ItemBlockID}.
      * This ensures that all IDs are finalized and correctly assigned.
      * This method should be called during {@link cpw.mods.fml.common.event.FMLInitializationEvent} to validate the IDs before further usage.
      * After processing, the configuration is saved to persist the changes.
@@ -60,9 +60,9 @@ public class ConfigHandler {
         Class<?> configClass = config.getClass();
 
         for (Field field : configClass.getFields()) {
-            if (field.getType().isAssignableFrom(AutoID.class)) {
+            if (field.getType().isAssignableFrom(ItemBlockID.class)) {
                 try {
-                    AutoID autoID = (AutoID) field.get(configClass);
+                    ItemBlockID autoID = (ItemBlockID) field.get(configClass);
                     autoID.confirm(config);
                 } catch (IllegalArgumentException e) {
                     e.printStackTrace();
@@ -75,7 +75,7 @@ public class ConfigHandler {
     }
 
     /**
-     * Confirms ownership of item and block IDs by scanning the given configuration class for fields of type {@link AutoID}.
+     * Confirms ownership of item and block IDs by scanning the given configuration class for fields of type {@link ItemBlockID}.
      * This ensures that all IDs are correctly associated with the mod and prevents conflicts with other mods.
      * This method should be called during {@link cpw.mods.fml.common.event.FMLPostInitializationEvent} to finalize ownership validation.
      *
@@ -87,9 +87,9 @@ public class ConfigHandler {
         Class<?> configClass = config.getClass();
 
         for (Field field : configClass.getFields()) {
-            if (field.getType().isAssignableFrom(AutoID.class)) {
+            if (field.getType().isAssignableFrom(ItemBlockID.class)) {
                 try {
-                    AutoID autoID = (AutoID) field.get(configClass);
+                    ItemBlockID autoID = (ItemBlockID) field.get(configClass);
                     autoID.confirmOwnership(this.modid);
                 } catch (IllegalArgumentException e) {
                     e.printStackTrace();

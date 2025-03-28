@@ -6,7 +6,7 @@ import net.minecraft.item.Item;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.Property;
 
-public class AutoID {
+public class ItemBlockID {
 
     private final Mode mode;
     String name;
@@ -16,7 +16,7 @@ public class AutoID {
     boolean usedID = false;
     private static final int ITEM_SHIFT = 256;
 
-    public AutoID(Mode mode, String name, int defaultID) {
+    public ItemBlockID(Mode mode, String name, int defaultID) {
         this.mode = mode;
         this.name = name;
         this.id = defaultID;

@@ -6,10 +6,10 @@ import java.io.File;
 
 public class VintageConfig extends Configuration {
 
-    public static AutoID testItemID = new AutoID(AutoID.Mode.ITEM, "testItem", 1);
-    public static AutoID test2ItemID = new AutoID(AutoID.Mode.ITEM, "test2Item", 1);
-    public static AutoID testBlockID = new AutoID(AutoID.Mode.BLOCK, "testBlock", 1);
-    public static AutoID test2BlockID = new AutoID(AutoID.Mode.BLOCK, "test2Block", 1);
+    public static ItemBlockID testItemID = new ItemBlockID(ItemBlockID.Mode.ITEM, "testItem", 1);
+    public static ItemBlockID test2ItemID = new ItemBlockID(ItemBlockID.Mode.ITEM, "test2Item", 1);
+    public static ItemBlockID testBlockID = new ItemBlockID(ItemBlockID.Mode.BLOCK, "testBlock", 1);
+    public static ItemBlockID test2BlockID = new ItemBlockID(ItemBlockID.Mode.BLOCK, "test2Block", 1);
 
     public VintageConfig(File file) {
         super(file);
