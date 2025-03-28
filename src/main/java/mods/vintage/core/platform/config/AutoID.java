@@ -95,8 +95,8 @@ public class AutoID {
                     if (Block.blocksList[this.id] != null) {
                         what = Block.blocksList[this.id].getClass().getName();
                     }
-                } else if (Item.itemsList[this.id + 256] != null) {
-                    what = Item.itemsList[this.id + 256].getClass().getName();
+                } else if (Item.itemsList[this.id + ITEM_SHIFT] != null) {
+                    what = Item.itemsList[this.id + ITEM_SHIFT].getClass().getName();
                 }
 
                 String separator = "\n\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n\n";
