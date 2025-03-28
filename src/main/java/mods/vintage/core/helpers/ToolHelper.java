@@ -20,7 +20,7 @@ public class ToolHelper {
         return harvestAndDrop(world, x, y, z, player, simpleHarvest());
     }
 
-    private static IDropCallback simpleHarvest() {
+    public static IDropCallback simpleHarvest() {
         return new IDropCallback() {
             @Override
             public void handleServer(World world, Block block, int x, int y, int z, int metadata, EntityPlayer player) {

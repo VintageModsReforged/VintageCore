@@ -2,7 +2,6 @@ package mods.vintage.core.platform.events.tick;
 
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
-import mods.vintage.core.Refs;
 
 import java.util.EnumSet;
 
