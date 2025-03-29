@@ -6,18 +6,10 @@ import java.lang.reflect.Field;
 
 public class ConfigHandler {
 
-    private static ConfigHandler instance;
     private final String modid;
 
-    private ConfigHandler(String modid) {
+    public ConfigHandler(String modid) {
         this.modid = modid;
-    }
-
-    public static ConfigHandler getFor(String id) {
-        if (instance == null) {
-            instance = new ConfigHandler(id);
-        }
-        return instance;
     }
 
     /**

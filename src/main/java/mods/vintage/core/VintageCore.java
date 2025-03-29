@@ -28,7 +28,7 @@ public class VintageCore implements ILangProvider {
 
     public static Configuration CONFIG;
     public static String[] LANGS;
-    public ConfigHandler configHandler = ConfigHandler.getFor(Refs.ID);
+    public ConfigHandler configHandler = new ConfigHandler(Refs.ID);
     public VintageConfig config;
 
     public VintageCore() {
