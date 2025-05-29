@@ -9,6 +9,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
@@ -215,6 +216,10 @@ public class BlockHelper {
         return world.blockHasTileEntity(pos.getX(), pos.getY(), pos.getZ());
     }
 
+    public static TileEntity getBlockTileEntity(World world, BlockPos pos) {
+        return world.getBlockTileEntity(pos.getX(), pos.getY(), pos.getZ());
+    }
+
     public int blockGetRenderType(World world, BlockPos pos) {
         return world.blockGetRenderType(pos.getX(), pos.getY(), pos.getZ());
     }
@@ -266,7 +271,7 @@ public class BlockHelper {
         return world.destroyBlock(pos.getX(), pos.getY(), pos.getZ(), drop);
     }
 
-    public void removeBlockTileEntity(World world, BlockPos pos) {
+    public static void removeBlockTileEntity(World world, BlockPos pos) {
         world.removeBlockTileEntity(pos.getX(), pos.getY(), pos.getZ());
     }
 
