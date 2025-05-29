@@ -3,11 +3,13 @@ package mods.vintage.core.helpers;
 import cpw.mods.fml.common.Loader;
 import mods.vintage.core.helpers.pos.BlockPos;
 import net.minecraft.block.*;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
@@ -202,16 +204,60 @@ public class BlockHelper {
         }
     }
 
+    public static int getBlockId(World world, BlockPos pos) {
+        return world.getBlockId(pos.getX(), pos.getY(), pos.getZ());
+    }
+
     public static boolean isAir(World world, BlockPos pos) {
         return world.isAirBlock(pos.getX(), pos.getY(), pos.getZ());
+    }
+
+    public boolean blockHasTileEntity(World world, BlockPos pos) {
+        return world.blockHasTileEntity(pos.getX(), pos.getY(), pos.getZ());
+    }
+
+    public static TileEntity getBlockTileEntity(World world, BlockPos pos) {
+        return world.getBlockTileEntity(pos.getX(), pos.getY(), pos.getZ());
+    }
+
+    public int blockGetRenderType(World world, BlockPos pos) {
+        return world.blockGetRenderType(pos.getX(), pos.getY(), pos.getZ());
+    }
+
+    public boolean blockExists(World world, BlockPos pos) {
+        return world.blockExists(pos.getX(), pos.getY(), pos.getZ());
+    }
+
+    public static boolean setBlock(World world, BlockPos pos, int id) {
+        return world.setBlock(pos.getX(), pos.getY(), pos.getZ(), id);
+    }
+
+    public Material getBlockMaterial(World world, BlockPos pos) {
+        return world.getBlockMaterial(pos.getX(), pos.getY(), pos.getZ());
     }
 
     public static int getBlockMetadata(World world, BlockPos pos) {
         return world.getBlockMetadata(pos.getX(), pos.getY(), pos.getZ());
     }
 
-    public static int getBlockId(World world, BlockPos pos) {
-        return world.getBlockId(pos.getX(), pos.getY(), pos.getZ());
+    public void setBlockMetadataWithNotify(World world, BlockPos pos, int metadata) {
+        world.setBlockMetadataWithNotify(pos.getX(), pos.getY(), pos.getZ(), metadata);
+    }
+
+    public static boolean setBlockToAir(World world, BlockPos pos) {
+        return world.setBlock(pos.getX(), pos.getY(), pos.getZ(), 0);
+    }
+
+    public static void removeBlockTileEntity(World world, BlockPos pos) {
+        world.removeBlockTileEntity(pos.getX(), pos.getY(), pos.getZ());
+    }
+
+    public static void markBlockForUpdate(World world, BlockPos pos) {
+        world.markBlockForUpdate(pos.getX(), pos.getY(), pos.getZ());
+    }
+
+    public static void markBlockForRenderUpdate(World world, BlockPos pos) {
+        world.markBlockForRenderUpdate(pos.getX(), pos.getY(), pos.getZ());
     }
 
     public static Block getBlock(World world, BlockPos pos) {
