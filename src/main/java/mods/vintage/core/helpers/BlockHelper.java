@@ -3,6 +3,7 @@ package mods.vintage.core.helpers;
 import cpw.mods.fml.common.Loader;
 import mods.vintage.core.helpers.pos.BlockPos;
 import net.minecraft.block.*;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
@@ -202,16 +203,79 @@ public class BlockHelper {
         }
     }
 
+    public static int getBlockId(World world, BlockPos pos) {
+        return world.getBlockId(pos.getX(), pos.getY(), pos.getZ());
+    }
+
     public static boolean isAir(World world, BlockPos pos) {
         return world.isAirBlock(pos.getX(), pos.getY(), pos.getZ());
+    }
+
+    public boolean blockHasTileEntity(World world, BlockPos pos) {
+        return world.blockHasTileEntity(pos.getX(), pos.getY(), pos.getZ());
+    }
+
+    public int blockGetRenderType(World world, BlockPos pos) {
+        return world.blockGetRenderType(pos.getX(), pos.getY(), pos.getZ());
+    }
+
+    public boolean blockExists(World world, BlockPos pos) {
+        return world.blockExists(pos.getX(), pos.getY(), pos.getZ());
+    }
+
+    public static boolean setBlock(World world, BlockPos pos, int id) {
+        return world.setBlock(pos.getX(), pos.getY(), pos.getZ(), id);
+    }
+
+    public Material getBlockMaterial(World world, BlockPos pos) {
+        return world.getBlockMaterial(pos.getX(), pos.getY(), pos.getZ());
     }
 
     public static int getBlockMetadata(World world, BlockPos pos) {
         return world.getBlockMetadata(pos.getX(), pos.getY(), pos.getZ());
     }
 
-    public static int getBlockId(World world, BlockPos pos) {
-        return world.getBlockId(pos.getX(), pos.getY(), pos.getZ());
+    /**
+     * Sets the metadata value of a block at the given position and notifies the world accordingly.
+     *
+     * @param world    The world in which the block is located.
+     * @param pos      The block position (x, y, z).
+     * @param metadata The new metadata value to assign to the block (0–15).
+     * @param flag     Bitmask flags controlling update behavior:
+     *                 - 1: Notify neighboring blocks (e.g. for redstone updates)
+     *                 - 2: Send block update to client (re-renders the block)
+     *                 - 4: Prevent re-render (when combined with 2)
+     *                 - 8: Suppress observer block updates
+     *                 These flags can be combined using bitwise OR (e.g. 1 | 2 = 3).
+     *
+     * @return true if the metadata was successfully updated; false otherwise
+     * <br/>
+     * Example usage:
+     * <br/>
+     * setBlockMetadataWithNotify(world, pos, 3, 3); // Set metadata to 3, notify neighbors and client
+     */
+    public boolean setBlockMetadataWithNotify(World world, BlockPos pos, int metadata, int flag) {
+        return world.setBlockMetadataWithNotify(pos.getX(), pos.getY(), pos.getZ(), metadata, flag);
+    }
+
+    public static boolean setBlockToAir(World world, BlockPos pos) {
+        return world.setBlock(pos.getX(), pos.getY(), pos.getZ(), 0, 0, 3);
+    }
+
+    public boolean destroyBlock(World world, BlockPos pos, boolean drop) {
+        return world.destroyBlock(pos.getX(), pos.getY(), pos.getZ(), drop);
+    }
+
+    public void removeBlockTileEntity(World world, BlockPos pos) {
+        world.removeBlockTileEntity(pos.getX(), pos.getY(), pos.getZ());
+    }
+
+    public static void markBlockForUpdate(World world, BlockPos pos) {
+        world.markBlockForUpdate(pos.getX(), pos.getY(), pos.getZ());
+    }
+
+    public static void markBlockForRenderUpdate(World world, BlockPos pos) {
+        world.markBlockForRenderUpdate(pos.getX(), pos.getY(), pos.getZ());
     }
 
     public static Block getBlock(World world, BlockPos pos) {
