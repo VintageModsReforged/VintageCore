@@ -6,8 +6,12 @@ public class Translator {
         return FormattedTranslator.GRAY.format(key, args);
     }
 
+    public static String literal(String literal) {
+        return FormattedTranslator.GRAY.literal(literal);
+    }
+
     public static String format(boolean b) {
-        return format(b ? "true" : "false");
+        return literal(b ? "true" : "false");
     }
 
     public static String formattedBoolean(boolean bool) {
