@@ -100,11 +100,21 @@ public class ItemBlockID {
             if (this.id > 0) {
                 String what = null;
                 if (this.mode == Mode.BLOCK) {
-                    if (Block.blocksList[this.id] != null) {
-                        what = Block.blocksList[this.id].getClass().getName();
+                    Block existing = Block.blocksList[this.id];
+                    if (existing != null) {
+                        if (existing instanceof IItemBlockIDProvider) {
+                            return;
+                        }
+                        what = existing.getClass().getName();
                     }
                 } else if (Item.itemsList[this.id + ITEM_SHIFT] != null) {
-                    what = Item.itemsList[this.id + ITEM_SHIFT].getClass().getName();
+                    Item existing = Item.itemsList[this.id + ITEM_SHIFT];
+                    if (existing != null) {
+                        if (existing instanceof IItemBlockIDProvider) {
+                            return;
+                        }
+                        what = existing.getClass().getName();
+                    }
                 }
 
                 String separator = "\n\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n\n";
