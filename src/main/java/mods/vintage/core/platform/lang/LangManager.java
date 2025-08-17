@@ -1,5 +1,6 @@
 package mods.vintage.core.platform.lang;
 
+import cpw.mods.fml.common.discovery.ASMDataTable;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import mods.vintage.core.VintageCore;
 import net.minecraft.client.Minecraft;
@@ -7,36 +8,60 @@ import net.minecraft.client.Minecraft;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
 public class LangManager {
 
-    public static final LangManager THIS = new LangManager();
+    public static final LangManager INSTANCE = new LangManager();
 
     public void loadCreativeTabName(String modid, String tabName) {
         LanguageRegistry.instance().addStringLocalization("itemGroup." + modid, tabName);
     }
 
-    public <T extends ILangProvider> void registerLangProvider(T provider) {
-        List<String> languages = provider.getLocalizationList();
-        String modid = provider.getModid();
+    public void processLocalizationProviders(ASMDataTable asmData) {
+        for (ASMDataTable.ASMData data : asmData.getAll(LocalizationProvider.class.getName())) {
+            try {
+                Class<?> clazz = Class.forName(data.getClassName());
+                for (Field field : clazz.getDeclaredFields()) {
+                    if (field.isAnnotationPresent(LocalizationProvider.List.class)) {
+                        field.setAccessible(true);
+                        LocalizationProvider.List fieldAnn = field.getAnnotation(LocalizationProvider.List.class);
+                        String modId = fieldAnn.modId();
+                        Object value = field.get(null);
+                        if (value instanceof String[]) {
+                            List<String> languages = Arrays.asList((String[]) value);
+                            if (!languages.isEmpty()) {
+                                registerLanguages(clazz, modId, languages);
+                            }
+                        }
+                    }
+                }
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException("Failed to process @LocalizationProvider for class: " + data.getClassName(), e);
+            } catch (ClassNotFoundException ignored) {}
+        }
+    }
+
+    private void registerLanguages(Class<?> provider, String modId, List<String> languages) {
         if (!languages.isEmpty()) {
             for (String lang : languages) {
-                addEntry(provider, modid, lang);
+                addEntry(provider, modId, lang);
             }
             LanguageRegistry.reloadLanguageTable();
         }
     }
 
-    private <T extends ILangProvider> void addEntry(T provider, String modid, String lang) {
+    private void addEntry(Class<?> provider, String modid, String lang) {
         InputStream stream = null;
         InputStreamReader reader = null;
         boolean langPresent = false;
         String langFound = "";
         try {
             VintageCore.LOGGER.info(String.format("Trying to load %1$s.lang file from /assets/%2$s/lang folder...", lang, modid));
-            stream = provider.getClass().getResourceAsStream("/assets/" + modid + "/lang/" + lang + ".lang"); // use the default .lang file from modJar
+            stream = provider.getResourceAsStream("/assets/" + modid + "/lang/" + lang + ".lang"); // use the default .lang file from modJar
             if (stream == null) {
                 VintageCore.LOGGER.info(String.format("Couldn't load %1$s.lang file from assets/%2$s/lang folder for %2$s... Did you put it in config/%2$s/lang folder? Let me check...", lang, modid));
                 VintageCore.LOGGER.info(String.format("Trying to load %1$s.lang file from /config/%2$s/lang folder...", lang, modid));
