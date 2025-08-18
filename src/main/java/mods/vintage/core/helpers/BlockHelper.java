@@ -2,6 +2,7 @@ package mods.vintage.core.helpers;
 
 import cpw.mods.fml.common.Loader;
 import mods.vintage.core.helpers.pos.BlockPos;
+import mods.vintage.core.utils.Utils;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
