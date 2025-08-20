@@ -3,6 +3,7 @@ package mods.vintage.core.helpers;
 import cpw.mods.fml.relauncher.FMLInjectionData;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.Property;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.Arrays;
@@ -70,5 +71,19 @@ public class ConfigHelper {
         Property prop = cfg.get(cat, tag, defaultValue);
         prop.comment = comment + "Default: " + defaultValue;
         return prop.getBoolean(defaultValue);
+    }
+
+    public static boolean getBoolean(Configuration cfg, String cat, @Nullable String tagComment, String tag, boolean defaultValue, String comment) {
+        comment = comment.replace("{t}", tag) + "\n";
+        Property prop = cfg.get(cat, tag, defaultValue);
+        prop.comment = comment + (tagComment == null ? "" : tagComment + "\n") + "Default: " + defaultValue;
+        return prop.getBoolean(defaultValue);
+    }
+
+    public static String getString(Configuration cfg, String cat, @Nullable String tagComment, String tag, String defaultValue, String comment) {
+        comment = comment.replace("{t}", tag) + "\n";
+        Property prop = cfg.get(cat, tag, defaultValue);
+        prop.comment = comment + (tagComment == null ? "" : tagComment + "\n") + "Default: " + defaultValue;
+        return prop.getString();
     }
 }

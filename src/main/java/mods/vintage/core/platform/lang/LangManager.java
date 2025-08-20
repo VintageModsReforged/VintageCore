@@ -5,13 +5,10 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 import mods.vintage.core.VintageCore;
 import net.minecraft.client.Minecraft;
 
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Properties;
 
 public class LangManager {
 
@@ -56,47 +53,57 @@ public class LangManager {
 
     private void addEntry(Class<?> provider, String modid, String lang) {
         InputStream stream = null;
-        InputStreamReader reader = null;
-        boolean langPresent = false;
-        String langFound = "";
         try {
-            VintageCore.LOGGER.info(String.format("Trying to load %1$s.lang file from /mods/%2$s/lang folder...", lang, modid));
-            stream = provider.getResourceAsStream("/mods/" + modid + "/lang/" + lang + ".lang"); // use the default .lang file from modJar
+            stream = provider.getResourceAsStream("/mods/" + modid + "/lang/" + lang + ".json");
             if (stream == null) {
-                VintageCore.LOGGER.info(String.format("Couldn't load %1$s.lang file from mods/%2$s/lang folder for %2$s... Did you put it in config/%2$s/lang folder? Let me check...", lang, modid));
-                VintageCore.LOGGER.info(String.format("Trying to load %1$s.lang file from /config/%2$s/lang folder...", lang, modid));
-                stream = new FileInputStream(Minecraft.getMinecraftDir() + "/config/" + modid + "/lang/" + lang + ".lang"); // use the lang files from config/modid/lang folder
-                if (stream != null) {
-                    langPresent = true;
-                    langFound = lang;
-                }
-            } else {
-                langPresent = true;
-                langFound = lang;
-            }
-            reader = new InputStreamReader(stream, "UTF-8");
-            Properties props = new Properties();
-            props.load(reader);
-            for (String key : props.stringPropertyNames()) {
-                LanguageRegistry.instance().addStringLocalization(key, lang, props.getProperty(key));
-            }
-            if (langPresent) {
-                VintageCore.LOGGER.info(String.format("Loaded lang file for %s!", langFound));
+                File file = new File(Minecraft.getMinecraftDir(), "/config/" + modid + "/lang/" + lang + ".json");
+                if (file.exists()) stream = new FileInputStream(file);
             }
 
+            if (stream == null) {
+                VintageCore.LOGGER.info("No JSON lang file found for " + lang + " in mod " + modid);
+                return;
+            }
+
+            addJsonEntry(stream, lang);
+            VintageCore.LOGGER.info("Loaded JSON lang file for " + lang + " in mod " + modid);
+
         } catch (Throwable t) {
-            VintageCore.LOGGER.info(String.format("Couldn't load %s.lang file for %s. Skipping...", lang, modid));
+            VintageCore.LOGGER.info("Failed to load JSON lang file for " + lang + " in mod " + modid);
+            t.printStackTrace();
         } finally {
-            if (stream != null) {
-                try {
-                    stream.close();
-                } catch (Throwable ignored) {}
-            }
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (Throwable ignored) {}
-            }
+            if (stream != null) try { stream.close(); } catch (Throwable ignored) {}
         }
+    }
+
+    private void addJsonEntry(InputStream stream, String lang) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
+        String line;
+        while ((line = reader.readLine()) != null) {
+            line = line.trim();
+            if (line.isEmpty() || line.equals("{") || line.equals("}")) continue;
+
+            // Expect: "key": "value",
+            if (!line.contains(":")) continue;
+
+            int colonIndex = line.indexOf(':');
+            String key = line.substring(0, colonIndex).trim();
+            String value = line.substring(colonIndex + 1).trim();
+
+            // Remove quotes and trailing comma
+            if (key.startsWith("\"") && key.endsWith("\"")) {
+                key = key.substring(1, key.length() - 1);
+            }
+            if (value.endsWith(",")) value = value.substring(0, value.length() - 1);
+            if (value.startsWith("\"") && value.endsWith("\"")) {
+                value = value.substring(1, value.length() - 1);
+            }
+
+            // Unescape basic characters
+            value = value.replace("\\\"", "\"").replace("\\n", "\n").replace("\\t", "\t");
+
+            LanguageRegistry.instance().addStringLocalization(key, lang, value);
+        }
+        reader.close();
     }
 }

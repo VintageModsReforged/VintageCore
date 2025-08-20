@@ -11,6 +11,12 @@ import java.util.List;
 
 public class StackHelper {
 
+    public static ItemStack copyWithSize(ItemStack stack, int count) {
+        ItemStack returnStack = stack.copy();
+        returnStack.stackSize = count;
+        return returnStack;
+    }
+
     public static boolean isBlock(ItemStack stack) {
         String itemName = stack.toString();
         return !itemName.contains("item") && !itemName.contains("null");
