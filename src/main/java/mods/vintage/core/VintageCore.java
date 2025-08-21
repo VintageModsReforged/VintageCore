@@ -2,6 +2,7 @@ package mods.vintage.core;
 
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.registry.TickRegistry;
@@ -33,7 +34,12 @@ public class VintageCore {
     public void preInit(FMLPreInitializationEvent e) {
         VintageConfig.init();
         TickRegistry.registerTickHandler(new ClientTickEvent(), Side.CLIENT);
-        LangManager.INSTANCE.processLocalizationProviders(e.getAsmData());
+        LangManager.INSTANCE.scanForLocalizationProviders(e.getAsmData());
+    }
+
+    @Mod.Init
+    public void init(FMLInitializationEvent e) {
+        LangManager.INSTANCE.processLocalizationProviders();
     }
 
     @Mod.ServerStarting

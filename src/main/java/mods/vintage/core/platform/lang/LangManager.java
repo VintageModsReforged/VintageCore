@@ -1,5 +1,6 @@
 package mods.vintage.core.platform.lang;
 
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.discovery.ASMDataTable;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import mods.vintage.core.VintageCore;
@@ -7,21 +8,31 @@ import net.minecraft.client.Minecraft;
 
 import java.io.*;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class LangManager {
 
     public static final LangManager INSTANCE = new LangManager();
+    List<String> LOCALIZATION_PROVIDERS = new ArrayList<String>();
 
     public void loadCreativeTabName(String modid, String tabName) {
         LanguageRegistry.instance().addStringLocalization("itemGroup." + modid, tabName);
     }
 
-    public void processLocalizationProviders(ASMDataTable asmData) {
-        for (ASMDataTable.ASMData data : asmData.getAll(LocalizationProvider.class.getName())) {
+    // called during preInit
+    public void scanForLocalizationProviders(ASMDataTable asmDataTable) {
+        for (ASMDataTable.ASMData data : asmDataTable.getAll(LocalizationProvider.class.getName())) {
+            LOCALIZATION_PROVIDERS.add(data.getClassName());
+        }
+    }
+
+    // called during init;
+    public void processLocalizationProviders() {
+        for (String className : LOCALIZATION_PROVIDERS) {
             try {
-                Class<?> clazz = Class.forName(data.getClassName());
+                Class<?> clazz = Class.forName(className);
                 for (Field field : clazz.getDeclaredFields()) {
                     if (field.isAnnotationPresent(LocalizationProvider.List.class)) {
                         field.setAccessible(true);
@@ -37,9 +48,12 @@ public class LangManager {
                     }
                 }
             } catch (IllegalAccessException e) {
-                throw new RuntimeException("Failed to process @LocalizationProvider for class: " + data.getClassName(), e);
-            } catch (ClassNotFoundException ignored) {}
+                throw new RuntimeException("Failed to process @LocalizationProvider for class: " + className, e);
+            } catch (ClassNotFoundException e) {
+                FMLLog.severe("Could not find class {} for @LocalizationProvider", className, e);
+            }
         }
+        LOCALIZATION_PROVIDERS.clear(); // clear when we're done
     }
 
     private void registerLanguages(Class<?> provider, String modId, List<String> languages) {
