@@ -17,5 +17,8 @@
   "info.tier.uiv": "UIV",
   "info.tier.umv": "UMV",
   "info.tier.uxv": "UXV",
-  "info.tier.max": "MAX"
+  "info.tier.max": "MAX",
+
+  "info.energy": "%s/%s EU %s",
+  "info.energy.tier": "(T: %s)"
 }

@@ -7,9 +7,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 import java.lang.reflect.Method;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.List;
+import java.util.Locale;
 
 public class ElectricHelper {
+
+    public static String energyTooltip(int current, int max, int tier) {
+        DecimalFormat formatter = new DecimalFormat("###,###", new DecimalFormatSymbols(Locale.ROOT));
+        return Translator.AQUA.format("info.energy", formatter.format(current), formatter.format(max), Translator.DARK_GRAY.format("info.energy.tier", Translator.YELLOW.literal(getTierForDisplay(tier))));
+    }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     public static void addChargeVariants(Item item, List list) {
