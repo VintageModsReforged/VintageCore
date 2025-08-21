@@ -1,0 +1,5 @@
+{
+  "chat.gamemode.switched": "Set own game mode to %s",
+  "mode.survival.name": "Survival mode",
+  "mode.creative.name": "Creative mode"
+}
