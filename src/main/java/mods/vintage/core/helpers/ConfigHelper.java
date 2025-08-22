@@ -86,4 +86,11 @@ public class ConfigHelper {
         prop.comment = comment + (tagComment == null ? "" : tagComment + "\n") + "Default: " + defaultValue;
         return prop.getString();
     }
+
+    public static int[] getInts(Configuration cfg, String cat, String tag, int[] defaultValue, String comment) {
+        comment = comment.replace("{t}", tag) + "\n";
+        Property prop = cfg.get(cat, tag, defaultValue);
+        prop.comment = comment + "Default: " + Arrays.toString(defaultValue);
+        return prop.getIntList();
+    }
 }
