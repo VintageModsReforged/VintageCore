@@ -26,7 +26,7 @@ public class ConfigHelper {
     }
 
     public static String[] getLocalizations(Configuration cfg, String[] defaultValue, String modid) {
-        return getStrings(cfg, "general", "localizations", defaultValue, "Supported localizations. Place your <name>.lang file in config/" + modid + "/lang folder or inside mods/" + modid + "/lang inside modJar");
+        return getStrings(cfg, "general", "localizations", defaultValue, "Supported localizations. Place your <name>.json file in config/" + modid + "/lang folder or inside mods/" + modid + "/lang inside modJar");
     }
 
     public static String getString(Configuration cfg, String cat, String tag, String defaultValue, String comment) {
