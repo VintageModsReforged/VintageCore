@@ -1,9 +1,10 @@
 package mods.vintage.core.helpers.pos;
 
 import com.google.common.collect.AbstractIterator;
-import mods.vintage.core.annotation.Immutable;
+import net.jcip.annotations.Immutable;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.MovingObjectPosition;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Iterator;
@@ -33,6 +34,10 @@ public class BlockPos extends Vec3i {
 
     public BlockPos add(int x, int y, int z) {
         return x == 0 && y == 0 && z == 0 ? this : new BlockPos(this.getX() + x, this.getY() + y, this.getZ() + z);
+    }
+
+    public static BlockPos fromMovingObjectPosition(MovingObjectPosition pos) {
+        return new BlockPos(pos.blockX, pos.blockY, pos.blockZ);
     }
 
     public static Iterable<BlockPos> getAllInBox(BlockPos from, BlockPos to) {

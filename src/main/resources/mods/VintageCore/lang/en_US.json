@@ -1,0 +1,24 @@
+{
+  "chat.gamemode.switched": "Set own game mode to %s",
+  "mode.survival.name": "Survival mode",
+  "mode.creative.name": "Creative mode",
+
+  "info.tier.ulv": "ULV",
+  "info.tier.lv": "LV",
+  "info.tier.mv": "MV",
+  "info.tier.hv": "HV",
+  "info.tier.ev": "EV",
+  "info.tier.iv": "IV",
+  "info.tier.luv": "LuV",
+  "info.tier.zpm": "ZPM",
+  "info.tier.uv": "UV",
+  "info.tier.uhv": "UHV",
+  "info.tier.uev": "UEV",
+  "info.tier.uiv": "UIV",
+  "info.tier.umv": "UMV",
+  "info.tier.uxv": "UXV",
+  "info.tier.max": "MAX",
+
+  "info.energy": "%s/%s EU %s",
+  "info.energy.tier": "(Tier: %s)"
+}

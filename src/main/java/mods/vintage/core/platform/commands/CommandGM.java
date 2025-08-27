@@ -1,6 +1,6 @@
 package mods.vintage.core.platform.commands;
 
-import mods.vintage.core.platform.lang.FormattedTranslator;
+import mods.vintage.core.platform.lang.Translator;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
@@ -38,7 +38,7 @@ public class CommandGM extends CommandBase {
     public void processCommand(ICommandSender iCommandSender, String[] strings) {
         EntityPlayerMP playerMP = getCommandSenderAsPlayer(iCommandSender);
         EnumGameType mode = playerMP.capabilities.isCreativeMode ? EnumGameType.SURVIVAL : EnumGameType.CREATIVE;
-        playerMP.addChatMessage(FormattedTranslator.GRAY.format("chat.gamemode.switched", FormattedTranslator.GOLD.format(MAPPED_MODES.get(mode))));
+        playerMP.addChatMessage(Translator.GRAY.format("chat.gamemode.switched", Translator.GOLD.format(MAPPED_MODES.get(mode))));
         playerMP.setGameType(mode);
     }
 

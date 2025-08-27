@@ -1,6 +1,9 @@
-package mods.vintage.core.helpers;
+package mods.vintage.core.utils;
 
 import java.lang.reflect.Array;
+
+import static java.lang.Character.MAX_SURROGATE;
+import static java.lang.Character.MIN_SURROGATE;
 
 @SuppressWarnings("all")
 public class Utils {
@@ -41,5 +44,9 @@ public class Utils {
             return newArray;
         }
         return Array.newInstance(newArrayComponentType, 1);
+    }
+
+    public static boolean isSurrogate(char ch) {
+        return ch >= MIN_SURROGATE && ch < (MAX_SURROGATE + 1);
     }
 }

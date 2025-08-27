@@ -11,6 +11,18 @@ import java.util.List;
 
 public class StackHelper {
 
+    public static ItemStack copyWithWildCard(ItemStack itemStack) {
+        ItemStack ret = itemStack.copy();
+        ret.setItemDamage(32767);
+        return ret;
+    }
+
+    public static ItemStack copyWithSize(ItemStack stack, int count) {
+        ItemStack returnStack = stack.copy();
+        returnStack.stackSize = count;
+        return returnStack;
+    }
+
     public static boolean isBlock(ItemStack stack) {
         String itemName = stack.toString();
         return !itemName.contains("item") && !itemName.contains("null");
