@@ -56,6 +56,22 @@ dependencies {
 	modImplementation("maven.modrinth:codechicken-core:0.8.7.3")
 }
 
+def props = ['modName', 'modid', 'modVersion', 'modDescription', 'modAuthors', 'modDeps', 'minecraft']
+processResources {
+	filesMatching("mcmod.info") {
+		expand(project.properties.subMap(props))
+	}
+}
+
+task sourcesJar(type: Jar) {
+	archiveClassifier.set("sources")
+	from sourceSets.main.allSource
+}
+
+artifacts {
+	archives sourcesJar
+}
+
 jar {
 	exclude ("**/codechicken/**")
 }

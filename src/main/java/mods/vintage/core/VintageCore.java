@@ -20,7 +20,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import java.util.logging.Logger;
 
 
-@Mod(modid = Refs.ID, name = Refs.NAME, version = Refs.VERSION, acceptedMinecraftVersions = Refs.MC_VERSION)
+@Mod(modid = Refs.ID, useMetadata = true)
 public class VintageCore {
 
     public static final Logger LOGGER = Logger.getLogger(Refs.LOG_NAME);
