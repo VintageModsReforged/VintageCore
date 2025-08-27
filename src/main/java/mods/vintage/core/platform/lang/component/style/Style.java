@@ -1,10 +1,8 @@
 package mods.vintage.core.platform.lang.component.style;
 
-import com.google.gson.*;
 import mods.vintage.core.utils.Optional;
 import org.jetbrains.annotations.Nullable;
 
-import java.lang.reflect.Type;
 import java.util.Arrays;
 
 public class Style {
@@ -299,107 +297,5 @@ public class Style {
     public int hashCode() {
         Object[] objects = new Object[] {this.color, this.bold, this.italic, this.underlined, this.strikethrough, this.obfuscated, this.insertion};
         return Arrays.hashCode(objects);
-    }
-
-    public static class Serializer implements JsonDeserializer<Style>, JsonSerializer<Style> {
-        @Nullable
-        public Style deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext context) throws JsonParseException {
-            if (jsonElement.isJsonObject()) {
-                JsonObject jsonobject = jsonElement.getAsJsonObject();
-                if (jsonobject == null) {
-                    return null;
-                } else {
-                    Boolean bold = getOptionalFlag(jsonobject, "bold");
-                    Boolean italic = getOptionalFlag(jsonobject, "italic");
-                    Boolean underlined = getOptionalFlag(jsonobject, "underlined");
-                    Boolean strikethrough = getOptionalFlag(jsonobject, "strikethrough");
-                    Boolean obfuscated = getOptionalFlag(jsonobject, "obfuscated");
-                    TextColor textcolor = getTextColor(jsonobject);
-                    String s = getInsertion(jsonobject);
-                    return new Style(textcolor, bold, italic, underlined, strikethrough, obfuscated, s);
-                }
-            } else {
-                return null;
-            }
-        }
-
-        @Nullable
-        private static String getInsertion(JsonObject jsonobject) {
-            return getAsString(jsonobject, "insertion", null);
-        }
-
-        @Nullable
-        private static TextColor getTextColor(JsonObject jsonobject) {
-            if (jsonobject.has("color")) {
-                String s = getAsString(jsonobject, "color");
-                return TextColor.parseColor(s);
-            } else {
-                return null;
-            }
-        }
-
-        @Nullable
-        private static Boolean getOptionalFlag(JsonObject jsonobject, String flag) {
-            return jsonobject.has(flag) ? jsonobject.get(flag).getAsBoolean() : null;
-        }
-
-        @Nullable
-        public JsonElement serialize(Style style, Type type, JsonSerializationContext context) {
-            if (style.isEmpty()) {
-                return null;
-            } else {
-                JsonObject jsonobject = new JsonObject();
-                if (style.bold != null) {
-                    jsonobject.addProperty("bold", style.bold);
-                }
-
-                if (style.italic != null) {
-                    jsonobject.addProperty("italic", style.italic);
-                }
-
-                if (style.underlined != null) {
-                    jsonobject.addProperty("underlined", style.underlined);
-                }
-
-                if (style.strikethrough != null) {
-                    jsonobject.addProperty("strikethrough", style.strikethrough);
-                }
-
-                if (style.obfuscated != null) {
-                    jsonobject.addProperty("obfuscated", style.obfuscated);
-                }
-
-                if (style.color != null) {
-                    jsonobject.addProperty("color", style.color.serialize());
-                }
-
-                if (style.insertion != null) {
-                    jsonobject.add("insertion", context.serialize(style.insertion));
-                }
-
-                return jsonobject;
-            }
-        }
-
-        public static String getAsString(JsonObject jsonObject, String tag) {
-            if (jsonObject.has(tag)) {
-                return convertToString(jsonObject.get(tag), tag);
-            } else {
-                throw new JsonSyntaxException("Missing " + tag + ", expected to find a string");
-            }
-        }
-
-        @Nullable
-        public static String getAsString(JsonObject jsonObject, String tag, @Nullable String orElse) {
-            return jsonObject.has(tag) ? convertToString(jsonObject.get(tag), tag) : orElse;
-        }
-
-        public static String convertToString(JsonElement jsonElement, String tag) {
-            if (jsonElement.isJsonPrimitive()) {
-                return jsonElement.getAsString();
-            } else {
-                throw new JsonSyntaxException("Expected " + tag + " to be a string!");
-            }
-        }
     }
 }

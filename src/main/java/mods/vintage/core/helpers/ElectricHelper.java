@@ -32,17 +32,13 @@ public class ElectricHelper {
             } else {
                 ItemStack ret = new ItemStack(item);
                 Class<?> electricItemClass = Class.forName("ic2.api.item.ElectricItem");
-                // Get static field "manager"
                 Object manager = electricItemClass.getField("manager").get(null);
-                // Find the charge method
-                // signature: charge(ItemStack, int, int, boolean, boolean)
                 Class<?> managerClass = manager.getClass();
                 Method chargeMethod = managerClass.getMethod(
                         "charge",
                         ItemStack.class, int.class, int.class, boolean.class, boolean.class
                 );
                 chargeMethod.invoke(manager, ret, charge, Integer.MAX_VALUE, true, false);
-
                 return ret;
             }
         } catch (Exception e) {

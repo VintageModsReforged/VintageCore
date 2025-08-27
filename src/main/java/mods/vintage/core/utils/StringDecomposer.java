@@ -1,8 +1,8 @@
 package mods.vintage.core.utils;
 
-import mods.vintage.core.platform.lang.component.style.ChatFormatting;
 import mods.vintage.core.platform.lang.component.interfaces.FormattedCharSink;
 import mods.vintage.core.platform.lang.component.interfaces.FormattedText;
+import mods.vintage.core.platform.lang.component.style.ChatFormatting;
 import mods.vintage.core.platform.lang.component.style.Style;
 
 public class StringDecomposer {

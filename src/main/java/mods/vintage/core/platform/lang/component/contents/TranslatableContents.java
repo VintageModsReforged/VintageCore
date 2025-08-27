@@ -1,7 +1,8 @@
 package mods.vintage.core.platform.lang.component.contents;
 
 import com.google.common.collect.ImmutableList;
-import mods.vintage.core.platform.lang.component.*;
+import mods.vintage.core.platform.lang.component.FormattedTexts;
+import mods.vintage.core.platform.lang.component.MutableComponent;
 import mods.vintage.core.platform.lang.component.interfaces.Component;
 import mods.vintage.core.platform.lang.component.interfaces.FormattedText;
 import mods.vintage.core.platform.lang.component.style.Style;

@@ -1,7 +1,6 @@
 package mods.vintage.core.helpers;
 
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -14,7 +13,7 @@ public class StackHelper {
 
     public static ItemStack copyWithWildCard(ItemStack itemStack) {
         ItemStack ret = itemStack.copy();
-        Item.stick.setDamage(ret, 32767);
+        ret.setItemDamage(32767);
         return ret;
     }
 

@@ -19,7 +19,6 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
 import java.util.logging.Logger;
 
-
 @Mod(modid = Refs.ID, useMetadata = true)
 public class VintageCore {
 

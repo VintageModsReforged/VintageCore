@@ -1,7 +1,7 @@
 package mods.vintage.core.platform.lang;
 
-import mods.vintage.core.platform.lang.component.style.ChatFormatting;
 import mods.vintage.core.platform.lang.component.MutableComponent;
+import mods.vintage.core.platform.lang.component.style.ChatFormatting;
 
 public enum Translator {
     BLACK,

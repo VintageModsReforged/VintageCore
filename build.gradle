@@ -31,7 +31,7 @@ version = project.mod_version
 volde {
 	runs {
 		client {
-			programArg "quaternary"
+			programArg "Dev"
 		}
 	}
 }

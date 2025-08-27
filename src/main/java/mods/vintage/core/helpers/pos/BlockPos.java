@@ -1,7 +1,7 @@
 package mods.vintage.core.helpers.pos;
 
 import com.google.common.collect.AbstractIterator;
-import mods.vintage.core.annotation.Immutable;
+import net.jcip.annotations.Immutable;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
