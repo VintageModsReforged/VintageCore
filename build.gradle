@@ -56,7 +56,7 @@ dependencies {
 	modImplementation("maven.modrinth:codechicken-core:0.8.7.3")
 }
 
-def props = ['modName', 'modid', 'modVersion', 'modDescription', 'modAuthors', 'modDeps', 'minecraft']
+def props = ['modName', 'modid', 'modVersion', 'modDescription', 'modAuthors', 'modDeps', 'minecraft', 'url']
 processResources {
 	filesMatching("mcmod.info") {
 		expand(project.properties.subMap(props))
