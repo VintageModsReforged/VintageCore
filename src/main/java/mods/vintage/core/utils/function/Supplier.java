@@ -1,4 +1,4 @@
-package mods.vintage.core.helpers;
+package mods.vintage.core.utils.function;
 
 /**
  * Represents a supplier of results.

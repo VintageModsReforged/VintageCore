@@ -24,7 +24,7 @@ public class NEIVintageConfig implements IConfigureNEI {
 
     @Override
     public String getVersion() {
-        return "1.4.7-1.0.0";
+        return "1.6.4-1.0.0";
     }
 
     public static void createAndAddItemRange(String name, Integer... ids) {

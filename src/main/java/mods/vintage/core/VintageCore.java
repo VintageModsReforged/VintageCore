@@ -2,29 +2,26 @@ package mods.vintage.core;
 
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
-import mods.vintage.core.helpers.ConfigHelper;
+import mods.vintage.core.helpers.BlockHelper;
 import mods.vintage.core.platform.commands.CommandGM;
 import mods.vintage.core.platform.events.ClientTickEvent;
 import mods.vintage.core.platform.lang.LangManager;
-import mods.vintage.core.platform.lang.LocalizationProvider;
-import net.minecraftforge.common.Configuration;
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
+import net.minecraftforge.event.ForgeSubscribe;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
 import java.util.logging.Logger;
 
-@LocalizationProvider
-@Mod(modid = Refs.ID, name = Refs.NAME, version = Refs.VERSION, acceptedMinecraftVersions = Refs.MC_VERSION)
+@Mod(modid = Refs.ID, useMetadata = true)
 public class VintageCore {
 
     public static final Logger LOGGER = Logger.getLogger(Refs.LOG_NAME);
-
-    public static Configuration CONFIG;
-
-    @LocalizationProvider.List(modId = Refs.ID)
-    public static String[] LANGS;
 
     public VintageCore() {
         LOGGER.setParent(FMLLog.getLogger());
@@ -32,16 +29,32 @@ public class VintageCore {
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent e) {
-        CONFIG = ConfigHelper.getConfigFor(Refs.ID);
-        CONFIG.load();
-        LANGS = ConfigHelper.getLocalizations(CONFIG, new String[] { "en_US", "ru_RU" }, Refs.ID);
-        if (CONFIG.hasChanged()) CONFIG.save();
+        VintageConfig.init();
         TickRegistry.registerTickHandler(new ClientTickEvent(), Side.CLIENT);
-        LangManager.INSTANCE.processLocalizationProviders(e.getAsmData());
+        LangManager.INSTANCE.scanForLocalizationProviders(e.getAsmData());
+    }
+
+    @Mod.EventHandler
+    public void init(FMLInitializationEvent e) {
+        LangManager.INSTANCE.processLocalizationProviders();
     }
 
     @Mod.EventHandler
     public void onServerStarting(FMLServerStartingEvent e) {
         e.registerServerCommand(new CommandGM());
+    }
+
+    @ForgeSubscribe
+    public void onRightClick(PlayerInteractEvent e) {
+        if (VintageConfig.inspect_mode && e.entityPlayer.getHeldItem() != null) {
+            if (e.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK && e.entityPlayer.getHeldItem().getItem() == Item.stick) {
+                Block block = BlockHelper.getBlock(e.entity.worldObj, e.x, e.y, e.z);
+                int metadata = e.entityPlayer.worldObj.getBlockMetadata(e.x, e.y, e.z);
+                if (block != null) {
+                    LOGGER.info("Block: " + block.getLocalizedName() + " | Class Name: " + block.getClass().getName());
+                    LOGGER.info("Block Metadata: " + metadata);
+                }
+            }
+        }
     }
 }

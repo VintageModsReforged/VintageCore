@@ -1,5 +1,6 @@
 package mods.vintage.core.helpers;
 
+import mods.vintage.core.utils.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 

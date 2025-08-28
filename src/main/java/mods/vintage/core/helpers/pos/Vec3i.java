@@ -1,7 +1,7 @@
 package mods.vintage.core.helpers.pos;
 
 import com.google.common.base.Objects;
-import mods.vintage.core.annotation.Immutable;
+import net.jcip.annotations.Immutable;
 import net.minecraft.util.MathHelper;
 
 @Immutable

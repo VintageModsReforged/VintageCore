@@ -1,20 +1,55 @@
 package mods.vintage.core.platform.lang;
 
-public class Translator {
+import mods.vintage.core.platform.lang.component.MutableComponent;
+import mods.vintage.core.platform.lang.component.style.ChatFormatting;
 
-    public static String format(String key, Object... args) {
-        return FormattedTranslator.GRAY.format(key, args);
+public enum Translator {
+    BLACK,
+    DARK_BLUE,
+    DARK_GREEN,
+    DARK_AQUA,
+    DARK_RED,
+    DARK_PURPLE,
+    GOLD,
+    GRAY,
+    DARK_GRAY,
+    BLUE,
+    GREEN,
+    AQUA,
+    RED,
+    LIGHT_PURPLE,
+    YELLOW,
+    WHITE,
+    OBFUSCATED,
+    BOLD,
+    STRIKETHROUGH,
+    UNDERLINE,
+    ITALIC,
+    RESET;
+
+    final ChatFormatting FORMAT;
+
+    Translator() {
+        this.FORMAT = ChatFormatting.valueOf(name());
     }
 
-    public static String literal(String literal) {
-        return FormattedTranslator.GRAY.literal(literal);
+    public String format(String key) {
+        return MutableComponent.translatable(key).withStyle(this.FORMAT).getFormattedString();
     }
 
-    public static String format(boolean b) {
+    public String format(String key, Object... args) {
+        return MutableComponent.translatable(key, args).withStyle(this.FORMAT).getFormattedString();
+    }
+
+    public String literal(String literal) {
+        return MutableComponent.literal(literal).withStyle(this.FORMAT).getFormattedString();
+    }
+
+    public String format(boolean b) {
         return literal(b ? "true" : "false");
     }
 
-    public static String formattedBoolean(boolean bool) {
-        return (bool ? FormattedTranslator.GREEN : FormattedTranslator.RED).literal(bool ? "true" : "false");
+    public String formattedBoolean(boolean bool) {
+        return MutableComponent.literal(format(bool)).withStyle(bool ? ChatFormatting.GREEN : ChatFormatting.RED).getFormattedString();
     }
 }

@@ -3,6 +3,7 @@ package mods.vintage.core.helpers;
 import cpw.mods.fml.relauncher.FMLInjectionData;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.Property;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.Arrays;
@@ -10,7 +11,11 @@ import java.util.Arrays;
 public class ConfigHelper {
 
     public static Configuration getConfigFor(String child) {
-        return new Configuration(new File((File) FMLInjectionData.data()[6], "config/" + child + ".cfg"));
+        return new Configuration(getConfigFileFor(child));
+    }
+
+    public static File getConfigFileFor(String child) {
+        return new File((File) FMLInjectionData.data()[6], "config/" + child + ".cfg");
     }
 
     public static String[] getStrings(Configuration cfg, String cat, String tag, String[] defaultValue, String comment) {
@@ -21,7 +26,7 @@ public class ConfigHelper {
     }
 
     public static String[] getLocalizations(Configuration cfg, String[] defaultValue, String modid) {
-        return getStrings(cfg, "general", "localizations", defaultValue, "Supported localizations. Place your <name>.lang file in config/" + modid + "/lang folder or inside mods/" + modid + "/lang inside modJar");
+        return getStrings(cfg, "general", "localizations", defaultValue, "Supported localizations. Place your <name>.json file in config/" + modid + "/lang folder or inside mods/" + modid + "/lang inside modJar");
     }
 
     public static String getString(Configuration cfg, String cat, String tag, String defaultValue, String comment) {
@@ -66,5 +71,26 @@ public class ConfigHelper {
         Property prop = cfg.get(cat, tag, defaultValue);
         prop.comment = comment + "Default: " + defaultValue;
         return prop.getBoolean(defaultValue);
+    }
+
+    public static boolean getBoolean(Configuration cfg, String cat, @Nullable String tagComment, String tag, boolean defaultValue, String comment) {
+        comment = comment.replace("{t}", tag) + "\n";
+        Property prop = cfg.get(cat, tag, defaultValue);
+        prop.comment = comment + (tagComment == null ? "" : tagComment + "\n") + "Default: " + defaultValue;
+        return prop.getBoolean(defaultValue);
+    }
+
+    public static String getString(Configuration cfg, String cat, @Nullable String tagComment, String tag, String defaultValue, String comment) {
+        comment = comment.replace("{t}", tag) + "\n";
+        Property prop = cfg.get(cat, tag, defaultValue);
+        prop.comment = comment + (tagComment == null ? "" : tagComment + "\n") + "Default: " + defaultValue;
+        return prop.getString();
+    }
+
+    public static int[] getInts(Configuration cfg, String cat, String tag, int[] defaultValue, String comment) {
+        comment = comment.replace("{t}", tag) + "\n";
+        Property prop = cfg.get(cat, tag, defaultValue);
+        prop.comment = comment + "Default: " + Arrays.toString(defaultValue);
+        return prop.getIntList();
     }
 }

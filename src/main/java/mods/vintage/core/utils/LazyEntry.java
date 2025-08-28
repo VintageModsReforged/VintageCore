@@ -1,4 +1,6 @@
-package mods.vintage.core.helpers;
+package mods.vintage.core.utils;
+
+import mods.vintage.core.utils.function.Supplier;
 
 public class LazyEntry<T> {
 
