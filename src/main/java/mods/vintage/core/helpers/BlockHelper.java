@@ -401,7 +401,7 @@ public class BlockHelper {
             return result;
         }
         if (!leavesFound[0]) {
-            return VeinSearchResult.NULL;
+            return VeinSearchResult.NO_LEAVES;
         }
 
         return result;
