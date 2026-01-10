@@ -347,29 +347,11 @@ public class BlockHelper {
         return block instanceof BlockLog || configLogs;
     }
 
-    public static boolean isLeaves(World world, BlockPos pos) {
-        Block block = BlockHelper.getBlock(world, pos);
-        String[] leaves = VintageConfig.leaves;
-        boolean configLeaves = false;
-        for (String leave : leaves) {
-            if (Utils.instanceOf(block, leave)) configLeaves = true;
-            break;
-        }
-        return getBOPStatus(world, pos) || configLeaves;
-    }
-
-    private static boolean getBOPStatus(World world, BlockPos pos) {
-        int meta = BlockHelper.getBlockMetadata(world, pos) | 8;
-        Block block = BlockHelper.getBlock(world, pos);
-        if (Loader.isModLoaded("BiomesOPlenty")) {
-            if (Utils.instanceOf(block, "biomesoplenty.blocks.BlockBOPPetals") ||
-                    Utils.instanceOf(block, "biomesoplenty.blocks.BlockBOPLeaves") ||
-                    Utils.instanceOf(block, "biomesoplenty.blocks.BlockBOPColorizedLeaves") ||
-                    Utils.instanceOf(block, "biomesoplenty.blocks.BlockBOPAppleLeaves")) {
-                return meta >= 8 && meta <= 15;
-            }
-        }
-        return false;
+    public static boolean isNaturalLeaf(World world, BlockPos pos) {
+        Block block = getBlock(world, pos);
+        if (!(block instanceof BlockLeaves)) return false;
+        int meta = world.getBlockMetadata(pos.getX(), pos.getY(), pos.getZ());
+        return (meta & 4) == 0;
     }
 
     public static VeinSearchResult scanForTree(final World world, final BlockPos startPos) {
@@ -391,9 +373,9 @@ public class BlockHelper {
         VeinSearchResult result = recursiveSearch(world, startPos, new IBlockAction() {
             @Override
             public boolean actionPerformed(BlockPos pos, Block block, boolean isRightBlock) {
-                int metadata = getBlockMetadata(world, pos) | 8;
-                boolean isLeave = metadata >= 8 && metadata <= 11;
-                if (block.isLeaves(world, startPos.getX(), startPos.getY(), startPos.getZ()) && isLeave || isLeaves(world, pos)) leavesFound[0] = true;
+                if (isNaturalLeaf(world, pos)) {
+                    leavesFound[0] = true;
+                }
                 return true;
             }
         });
