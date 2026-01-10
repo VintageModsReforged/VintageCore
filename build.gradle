@@ -26,7 +26,7 @@ compileJava {
 String minecraftVersion = project.minecraft
 String forgeVersion = project.minecraft_forge
 archivesBaseName = project.modid
-version = project.mod_version
+version = project.modVersion
 
 volde {
 	runs {
