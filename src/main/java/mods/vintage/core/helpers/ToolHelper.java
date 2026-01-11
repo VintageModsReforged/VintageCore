@@ -2,6 +2,7 @@ package mods.vintage.core.helpers;
 
 import com.google.common.collect.ImmutableList;
 import mods.vintage.core.helpers.pos.BlockPos;
+import mods.vintage.core.utils.IHarvestCallback;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,78 +21,84 @@ public class ToolHelper {
         return harvestAndDrop(world, x, y, z, player, simpleHarvest());
     }
 
-    public static IDropCallback simpleHarvest() {
-        return new IDropCallback() {
+    public static IHarvestCallback simpleHarvest() {
+        return new IHarvestCallback() {
             @Override
-            public void handleServer(World world, Block block, int x, int y, int z, int metadata, EntityPlayer player) {
-                block.harvestBlock(world, player, x, y, z, metadata);
+            public HarvestMode getMode(World world, Block block, int x, int y, int z, int meta, EntityPlayer player) {
+                return HarvestMode.NORMAL;
             }
 
             @Override
-            public void handleClient(World world, Block block, int x, int y, int z, int metadata, EntityPlayer player) {
-                // NO-OP
+            public void handleCustom(World world, Block block, int x, int y, int z, int meta, EntityPlayer player) {
+                block.harvestBlock(world, player, x, y, z, meta);
             }
         };
     }
 
-    public static boolean harvestAndDrop(World world, int x, int y, int z, EntityPlayer player, IDropCallback callback) {
-        if (world.isAirBlock(x, y, z)) {
-            return false;
-        } else {
-            EntityPlayerMP playerMP = null;
-            if (player instanceof EntityPlayerMP) {
-                playerMP = (EntityPlayerMP)player;
+    public static boolean harvestAndDrop(World world, int x, int y, int z, EntityPlayer player, IHarvestCallback callback) {
+        Block block = BlockHelper.getBlock(world, x, y, z);
+        int meta = world.getBlockMetadata(x, y, z);
+
+        if (block == null) return false;
+        if (world.isAirBlock(x, y, z)) return false;
+
+        if (!ForgeHooks.canHarvestBlock(block, player, meta)) return false;
+
+        boolean isCreative = player.capabilities.isCreativeMode;
+        EntityPlayerMP mp = player instanceof EntityPlayerMP ? (EntityPlayerMP) player : null;
+
+        // --- CLIENT SIDE ---
+        if (world.isRemote) {
+            world.playAuxSFXAtEntity(player, 2001, x, y, z, world.getBlockId(x, y, z) | (meta << 12));
+            if (block.removeBlockByPlayer(world, player, x, y, z)) {
+                block.onBlockDestroyedByPlayer(world, x, y, z, meta);
             }
-            Block block = Block.blocksList[world.getBlockId(x, y, z)];
-            int metadata = world.getBlockMetadata(x, y, z);
-            if (!ForgeHooks.canHarvestBlock(block, player, metadata)) {
-                return false;
-            } else {
-                if (player.capabilities.isCreativeMode) {
-                    if (!world.isRemote) {
-                        block.onBlockHarvested(world, x, y, z, metadata, player);
-                    } else {
-                        world.playAuxSFX(2001, x, y, z, world.getBlockId(x, y, z) | metadata << 12);
-                    }
+            Minecraft.getMinecraft().getNetHandler().addToSendQueue(new Packet14BlockDig());
+            return true;
+        }
 
-                    if (block.removeBlockByPlayer(world, player, x, y, z)) {
-                        block.onBlockDestroyedByPlayer(world, x, y, z, metadata);
-                    }
+        // --- SERVER SIDE ---
+        block.onBlockHarvested(world, x, y, z, meta, player);
 
-                    if (!world.isRemote) {
-                        assert playerMP != null;
+        if (!block.removeBlockByPlayer(world, player, x, y, z)) {
+            return false;
+        }
+        block.onBlockDestroyedByPlayer(world, x, y, z, meta);
 
-                        playerMP.playerNetServerHandler.sendPacketToPlayer(new Packet53BlockChange());
-                    } else {
-                        Minecraft.getMinecraft().getNetHandler().addToSendQueue(new Packet14BlockDig());
-                    }
-                } else {
-                    world.playAuxSFXAtEntity(player, 2001, x, y, z, world.getBlockId(x, y, z) | metadata << 12);
-                    if (!world.isRemote) {
-                        block.onBlockHarvested(world, x, y, z, metadata, player);
-                        if (block.removeBlockByPlayer(world, player, x, y, z)) {
-                            block.onBlockDestroyedByPlayer(world, x, y, z, metadata);
-                            callback.handleServer(world, block, x, y, z, metadata, player);
-                        }
-                        assert playerMP != null;
-                        playerMP.playerNetServerHandler.sendPacketToPlayer(new Packet53BlockChange());
-                    } else {
-                        if (block.removeBlockByPlayer(world, player, x, y, z)) {
-                            block.onBlockDestroyedByPlayer(world, x, y, z, metadata);
-                        }
-                        Minecraft.getMinecraft().getNetHandler().addToSendQueue(new Packet14BlockDig());
-                        callback.handleClient(world, block, x, y, z, metadata, player);
-                    }
-                }
+        if (!isCreative && world.getGameRules().getGameRuleBooleanValue("doTileDrops")) {
 
-                return true;
+            IHarvestCallback.HarvestMode mode =
+                    callback != null
+                            ? callback.getMode(world, block, x, y, z, meta, player)
+                            : IHarvestCallback.HarvestMode.NORMAL;
+
+            switch (mode) {
+                case NORMAL:
+                    block.harvestBlock(world, player, x, y, z, meta);
+                    break;
+
+                case SMELT:
+                    // custom drop, NO XP
+                    callback.handleCustom(world, block, x, y, z, meta, player);
+                    break;
+
+                case CUSTOM:
+                    callback.handleCustom(world, block, x, y, z, meta, player);
+                    break;
+
+                case VOID:
+                    // nothing
+                    break;
             }
         }
-    }
 
-    public interface IDropCallback {
-        void handleServer(World world, Block block, int x, int y, int z, int metadata, EntityPlayer player);
-        void handleClient(World world, Block block, int x, int y, int z, int metadata, EntityPlayer player);
+        if (mp != null) {
+            mp.playerNetServerHandler.sendPacketToPlayer(
+                    new Packet53BlockChange(x, y, z, world)
+            );
+        }
+
+        return true;
     }
 
     public static ImmutableList<BlockPos> getAOE(EntityPlayer player, BlockPos pos, int radius) {
