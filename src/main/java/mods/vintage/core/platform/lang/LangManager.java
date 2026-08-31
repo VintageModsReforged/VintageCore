@@ -11,49 +11,117 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class LangManager {
 
+    private static final String LOCALIZATION_PROVIDER_LIST_ANNOTATION =
+            "mods.vintage.core.platform.lang.LocalizationProvider$List";
+
     public static final LangManager INSTANCE = new LangManager();
-    List<String> LOCALIZATION_PROVIDERS = new ArrayList<String>();
+    List<ASMDataTable.ASMData> LOCALIZATION_PROVIDERS = new ArrayList<ASMDataTable.ASMData>();
 
     public void loadCreativeTabName(String modid, String tabName) {
         LanguageRegistry.instance().addStringLocalization("itemGroup." + modid, tabName);
     }
 
-    // called during preInit
+    /**
+     * Called during preInit.
+     * <p>
+     * We scan directly for @LocalizationProvider.List fields.
+     * <p>
+     * This deliberately uses the annotation name as a String instead of:
+     * <p>
+     *     LocalizationProvider.List.class.getName()
+     * <p>
+     * because the FML RelaunchClassLoader has trouble loading my annotation
+     * class directly...
+     */
     public void scanForLocalizationProviders(ASMDataTable asmDataTable) {
-        for (ASMDataTable.ASMData data : asmDataTable.getAll(LocalizationProvider.class.getName())) {
-            LOCALIZATION_PROVIDERS.add(data.getClassName());
+        LOCALIZATION_PROVIDERS.clear();
+        for (ASMDataTable.ASMData data : asmDataTable.getAll(LOCALIZATION_PROVIDER_LIST_ANNOTATION)) {
+            LOCALIZATION_PROVIDERS.add(data);
+            VintageCore.LOGGER.info("Found localization provider: "
+                    + data.getClassName() + "."
+                    + data.getObjectName()
+            );
         }
+
+        // I want to log it just in case
+        VintageCore.LOGGER.info("Found " + LOCALIZATION_PROVIDERS.size() + " localization provider fields");
     }
 
     // called during init;
     public void processLocalizationProviders() {
-        for (String className : LOCALIZATION_PROVIDERS) {
+        for (ASMDataTable.ASMData data : LOCALIZATION_PROVIDERS) {
+            String className = data.getClassName();
+            String fieldName = data.getObjectName();
+
             try {
-                Class<?> clazz = Class.forName(className);
-                for (Field field : clazz.getDeclaredFields()) {
-                    if (field.isAnnotationPresent(LocalizationProvider.List.class)) {
-                        field.setAccessible(true);
-                        LocalizationProvider.List fieldAnn = field.getAnnotation(LocalizationProvider.List.class);
-                        String modId = fieldAnn.modId();
-                        Object value = field.get(null);
-                        if (value instanceof String[]) {
-                            List<String> languages = Arrays.asList((String[]) value);
-                            if (!languages.isEmpty()) {
-                                registerLanguages(clazz, modId, languages);
-                            }
-                        }
-                    }
+                /*
+                 * The annotation itself should never be loaded here.
+                 *
+                 * FML already parsed the annotation and stored its
+                 * parameters in ASMData.getAnnotationInfo().
+                 */
+                Map<String, Object> annotationInfo = data.getAnnotationInfo();
+                if (annotationInfo == null) {
+                    VintageCore.LOGGER.info("No annotation information for "
+                            + className + "."
+                            + fieldName
+                    );
+                    continue;
                 }
+
+                Object modIdObject = annotationInfo.get("modId");
+
+                if (!(modIdObject instanceof String)) {
+                    VintageCore.LOGGER.info("No valid modId found for "
+                            + className + "."
+                            + fieldName
+                    );
+                    continue;
+                }
+
+                String modId = (String) modIdObject;
+                Class<?> clazz = Class.forName(className);
+                Field field = clazz.getDeclaredField(fieldName);
+                field.setAccessible(true);
+                Object value = field.get(null);
+                if (!(value instanceof String[])) {
+                    VintageCore.LOGGER.info(
+                            "Localization provider field "
+                                    + className + "."
+                                    + fieldName + " is not a String[]"
+                    );
+                    continue;
+                }
+
+                String[] languageArray = (String[]) value;
+                if (languageArray.length == 0) {
+                    continue;
+                }
+
+                List<String> languages = Arrays.asList(languageArray);
+                registerLanguages(clazz, modId, languages);
+            } catch (NoSuchFieldException e) {
+                FMLLog.severe("Could not find localization provider field "
+                        + className + "."
+                        + fieldName
+                );
+
             } catch (IllegalAccessException e) {
-                throw new RuntimeException("Failed to process @LocalizationProvider for class: " + className, e);
+                throw new RuntimeException("Failed to access localization provider field "
+                        + className + "."
+                        + fieldName, e
+                );
             } catch (ClassNotFoundException e) {
-                FMLLog.severe("Could not find class {} for @LocalizationProvider", className, e);
+                FMLLog.severe("Could not find localization provider class "
+                        + className
+                );
             }
         }
-        LOCALIZATION_PROVIDERS.clear(); // clear when we're done
+        LOCALIZATION_PROVIDERS.clear();
     }
 
     private void registerLanguages(Class<?> provider, String modId, List<String> languages) {
@@ -68,8 +136,18 @@ public class LangManager {
     private void addEntry(Class<?> provider, String modid, String lang) {
         InputStream stream = null;
         try {
+            /*
+             * First try to find the language file inside the provider's
+             * JAR/classpath.
+             * Example:
+             * /mods/mymod/lang/en_US.json
+             */
             stream = provider.getResourceAsStream("/mods/" + modid + "/lang/" + lang + ".json");
             if (stream == null) {
+                /*
+                 * If it isn't inside the JAR, try:
+                 * .minecraft/config/<modid>/lang/<lang>.json
+                 */
                 File file = new File(Minecraft.getMinecraftDir(), "/config/" + modid + "/lang/" + lang + ".json");
                 if (file.exists()) stream = new FileInputStream(file);
             }
