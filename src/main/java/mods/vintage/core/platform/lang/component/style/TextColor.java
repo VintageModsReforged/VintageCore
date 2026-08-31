@@ -1,7 +1,5 @@
 package mods.vintage.core.platform.lang.component.style;
 
-import org.jetbrains.annotations.Nullable;
-
 import java.util.*;
 
 public final class TextColor {
@@ -29,7 +27,6 @@ public final class TextColor {
     }
 
     private final int value;
-    @Nullable
     private final String name;
 
     private TextColor(int value, String name) {
@@ -98,7 +95,6 @@ public final class TextColor {
         }
     }
 
-    @Nullable
     public ChatFormatting toLegacyFormat() {
         for (Map.Entry<ChatFormatting, TextColor> entry : LEGACY_FORMAT_TO_COLOR.entrySet()) {
             if (this.equals(entry.getValue())) {

@@ -1,7 +1,6 @@
 package mods.vintage.core.platform.lang.component.style;
 
 import mods.vintage.core.utils.Optional;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 
@@ -9,26 +8,19 @@ public class Style {
 
     public static final Style EMPTY = new Style(null, null, null, null, null, null, null);
 
-    @Nullable
     final TextColor color;
-    @Nullable
     final Boolean bold;
-    @Nullable
     final Boolean italic;
-    @Nullable
     final Boolean underlined;
-    @Nullable
     final Boolean strikethrough;
-    @Nullable
     final Boolean obfuscated;
-    @Nullable
     final String insertion;
 
     private static Style create(Optional<TextColor> textColor, Optional<Boolean> bold, Optional<Boolean> italic, Optional<Boolean> underlined, Optional<Boolean> strikethrough, Optional<Boolean> obfuscated, Optional<String> insertion) {
         return new Style(textColor.orElse(null), bold.orElse(null), italic.orElse(null), underlined.orElse(null), strikethrough.orElse(null), obfuscated.orElse(null), insertion.orElse(null));
     }
 
-    Style(@Nullable TextColor textColor, @Nullable Boolean bold, @Nullable Boolean italic, @Nullable Boolean underlined, @Nullable Boolean strikethrough, @Nullable Boolean obfuscated, @Nullable String insertion) {
+    Style(TextColor textColor, Boolean bold, Boolean italic, Boolean underlined, Boolean strikethrough, Boolean obfuscated, String insertion) {
         this.color = textColor;
         this.bold = bold;
         this.italic = italic;
@@ -38,7 +30,6 @@ public class Style {
         this.insertion = insertion;
     }
 
-    @Nullable
     public TextColor getColor() {
         return this.color;
     }
@@ -67,16 +58,15 @@ public class Style {
         return this == EMPTY;
     }
 
-    @Nullable
     public String getInsertion() {
         return this.insertion;
     }
 
-    public Style withColor(@Nullable TextColor textColor) {
+    public Style withColor(TextColor textColor) {
         return new Style(textColor, this.bold, this.italic, this.underlined, this.strikethrough, this.obfuscated, this.insertion);
     }
 
-    public Style withColor(@Nullable ChatFormatting chatFormatting) {
+    public Style withColor(ChatFormatting chatFormatting) {
         return this.withColor(chatFormatting != null ? TextColor.fromLegacyFormat(chatFormatting) : null);
     }
 
@@ -84,27 +74,27 @@ public class Style {
         return this.withColor(TextColor.fromRgb(color));
     }
 
-    public Style withBold(@Nullable Boolean bold) {
+    public Style withBold(Boolean bold) {
         return new Style(this.color, bold, this.italic, this.underlined, this.strikethrough, this.obfuscated, this.insertion);
     }
 
-    public Style withItalic(@Nullable Boolean italic) {
+    public Style withItalic(Boolean italic) {
         return new Style(this.color, this.bold, italic, this.underlined, this.strikethrough, this.obfuscated, this.insertion);
     }
 
-    public Style withUnderlined(@Nullable Boolean underlined) {
+    public Style withUnderlined(Boolean underlined) {
         return new Style(this.color, this.bold, this.italic, underlined, this.strikethrough, this.obfuscated, this.insertion);
     }
 
-    public Style withStrikethrough(@Nullable Boolean strikethrough) {
+    public Style withStrikethrough(Boolean strikethrough) {
         return new Style(this.color, this.bold, this.italic, this.underlined, strikethrough, this.obfuscated, this.insertion);
     }
 
-    public Style withObfuscated(@Nullable Boolean obfuscated) {
+    public Style withObfuscated(Boolean obfuscated) {
         return new Style(this.color, this.bold, this.italic, this.underlined, this.strikethrough, obfuscated, this.insertion);
     }
 
-    public Style withInsertion(@Nullable String insertion) {
+    public Style withInsertion(String insertion) {
         return new Style(this.color, this.bold, this.italic, this.underlined, this.strikethrough, this.obfuscated, insertion);
     }
 
@@ -235,7 +225,7 @@ public class Style {
                 this.isNotFirst = true;
             }
 
-            void addFlagString(String string, @Nullable Boolean separator) {
+            void addFlagString(String string, Boolean separator) {
                 if (separator != null) {
                     this.prependSeparator();
                     if (!separator) {
@@ -247,7 +237,7 @@ public class Style {
 
             }
 
-            void addValueString(String string, @Nullable Object object) {
+            void addValueString(String string, Object object) {
                 if (object != null) {
                     this.prependSeparator();
                     stringbuilder.append(string);

@@ -2,7 +2,6 @@ package mods.vintage.core.platform.lang.component.style;
 
 import com.google.common.collect.Lists;
 import mods.vintage.core.utils.StringRepresentable;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.regex.Pattern;
@@ -47,14 +46,13 @@ public enum ChatFormatting implements StringRepresentable {
     private final boolean isFormat;
     private final String toString;
     private final int id;
-    @Nullable
     private final Integer color;
 
     private static String cleanName(String string) {
         return string.toLowerCase(Locale.ROOT).replaceAll("[^a-z]", "");
     }
 
-    ChatFormatting(String name, @Nullable char code, int id, Integer color) {
+    ChatFormatting(String name, char code, int id, Integer color) {
         this(name, code, false, id, color);
     }
 
@@ -62,7 +60,7 @@ public enum ChatFormatting implements StringRepresentable {
         this(name, code, isFormat, -1, null);
     }
 
-    ChatFormatting(String name, char code, boolean isFormat, int id, @Nullable Integer color) {
+    ChatFormatting(String name, char code, boolean isFormat, int id, Integer color) {
         this.name = name;
         this.code = code;
         this.isFormat = isFormat;
@@ -87,7 +85,6 @@ public enum ChatFormatting implements StringRepresentable {
         return !this.isFormat && this != RESET;
     }
 
-    @Nullable
     public Integer getColor() {
         return this.color;
     }
@@ -101,11 +98,11 @@ public enum ChatFormatting implements StringRepresentable {
         return this.toString;
     }
 
-    public static String stripFormatting(@Nullable String string) {
+    public static String stripFormatting(String string) {
         return string == null ? null : STRIP_FORMATTING_PATTERN.matcher(string).replaceAll("");
     }
 
-    public static ChatFormatting getByName(@Nullable String name) {
+    public static ChatFormatting getByName(String name) {
         return name == null ? null : FORMATTING_BY_NAME.get(cleanName(name));
     }
 
