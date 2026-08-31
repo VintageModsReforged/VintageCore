@@ -19,8 +19,7 @@ public class LangManager {
             "mods.vintage.core.platform.lang.LocalizationProvider$List";
 
     public static final LangManager INSTANCE = new LangManager();
-    List<ASMDataTable.ASMData> LOCALIZATION_PROVIDERS =
-            new ArrayList<ASMDataTable.ASMData>();
+    List<ASMDataTable.ASMData> LOCALIZATION_PROVIDERS = new ArrayList<ASMDataTable.ASMData>();
 
     public void loadCreativeTabName(String modid, String tabName) {
         LanguageRegistry.instance().addStringLocalization("itemGroup." + modid, tabName);
