@@ -5,7 +5,6 @@ import net.jcip.annotations.Immutable;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Iterator;
 
@@ -46,7 +45,6 @@ public class BlockPos extends Vec3i {
 
     public static Iterable<BlockPos> getAllInBox(final int x1, final int y1, final int z1, final int x2, final int y2, final int z2) {
         return new Iterable<BlockPos>() {
-            @NotNull
             @Override
             public Iterator<BlockPos> iterator() {
                 return new AbstractIterator<BlockPos>() {
@@ -95,7 +93,6 @@ public class BlockPos extends Vec3i {
     public static Iterable<BlockPos.MutableBlockPos> getAllInBoxMutable(final int x1, final int y1, final int z1, final int x2, final int y2, final int z2) {
         return new Iterable<BlockPos.MutableBlockPos>() {
             @Override
-            @NotNull
             public Iterator<BlockPos.MutableBlockPos> iterator() {
                 return new AbstractIterator<BlockPos.MutableBlockPos>() {
                     private BlockPos.MutableBlockPos pos;

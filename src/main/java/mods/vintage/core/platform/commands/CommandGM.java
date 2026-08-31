@@ -6,7 +6,6 @@ import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.EnumGameType;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -43,7 +42,7 @@ public class CommandGM extends CommandBase {
     }
 
     @Override
-    public int compareTo(@NotNull Object o) {
+    public int compareTo(Object o) {
         return o instanceof ICommand ? this.getCommandName().compareTo(((ICommand) o).getCommandName()) : 0;
     }
 }

@@ -10,7 +10,6 @@ import mods.vintage.core.platform.lang.component.style.ChatFormatting;
 import mods.vintage.core.platform.lang.component.style.Style;
 import mods.vintage.core.utils.Optional;
 import mods.vintage.core.utils.function.Function;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -196,7 +195,7 @@ public class MutableComponent implements Component {
         return builder.toString();
     }
 
-    public static Component nullToEmpty(@Nullable String string) {
+    public static Component nullToEmpty(String string) {
         return (Component) (string != null ? literal(string) : Component.EMPTY);
     }
 

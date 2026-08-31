@@ -43,10 +43,7 @@ repositories {
 }
 
 dependencies {
-
-	implementation 'com.google.code.gson:gson:2.11.0'
 	implementation 'net.jcip:jcip-annotations:1.0'
-	implementation 'org.jetbrains:annotations-java5:23.0.0'
 
 	minecraft "com.mojang:minecraft:${minecraftVersion}"
 	forge "net.minecraftforge:forge:${forgeVersion}:universal@zip"
